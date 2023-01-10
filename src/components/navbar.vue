@@ -7,7 +7,7 @@
     </div>
     <div class="logins" v-if="!user">
       <router-link to="/">Login</router-link>
-      <router-link to="/signin">Signin</router-link>
+      <router-link to="/signup">Signup</router-link>
     </div>
   </nav>
 </template>

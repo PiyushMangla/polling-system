@@ -1,7 +1,7 @@
 <template>
   <div class="formWrapper">
-    <form @submit.prevent="handleSignin">
-      <h3>Signin for new User</h3>
+    <form @submit.prevent="handleSignup">
+      <h3>Signup for new User</h3>
 
       <label class="formLabel">User Name:</label>
       <input
@@ -33,7 +33,7 @@
         <label>Admin</label>
       </div>
 
-      <button class="formBtn">Sign In</button>
+      <button class="formBtn">Sign Up</button>
     </form>
   </div>
 </template>
@@ -43,9 +43,9 @@ import { loginApi } from "../composables/loginApi";
 export default {
   name: "signIn",
   setup() {
-    const { userName, password, role, handleSignin } = loginApi();
+    const { userName, password, role, handleSignup } = loginApi();
 
-    return { userName, password, role, handleSignin };
+    return { userName, password, role, handleSignup };
   },
 };
 </script>

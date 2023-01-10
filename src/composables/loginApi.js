@@ -33,8 +33,8 @@ export const loginApi = () => {
     // };
 
     // for signin 
-    const handleSignin = () => {
-        store.dispatch("signin", {
+    const handleSignup = () => {
+        store.dispatch("signup", {
             username: userName.value,
             password: password.value,
             role: role.value,
@@ -45,8 +45,8 @@ export const loginApi = () => {
 
     const logout = () => {
         store.commit('setUser', null)
-        router.push('/signin')
+        router.push('/signup')
     }
 
-    return { userName, password, role, handleSignin, user, logout }
+    return { userName, password, role, handleSignup, user, logout }
 }

@@ -32,7 +32,7 @@ const store = createStore({
     // }
 
     //sigin api
-    signin: ({ commit }, { username, password, role, id }) => {
+    signup: ({ commit }, { username, password, role, id }) => {
       console.log("user signed in")
       commit('setUser', { username, password, role, id })
     }
