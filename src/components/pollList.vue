@@ -32,9 +32,7 @@ import { pollApi } from "../composables/pollApi.js";
 export default {
   name: "pollList",
   setup() {
-    const { polls, countVote, isState } = pollApi();
-
-    return { polls, countVote, isState };
+    return { ...pollApi() };
   },
 };
 </script>

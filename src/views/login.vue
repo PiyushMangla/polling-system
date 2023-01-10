@@ -31,9 +31,7 @@ import { loginApi } from "../composables/loginApi.js";
 export default {
   name: "logIn",
   setup() {
-    const { userName, password } = loginApi();
-
-    return { userName, password };
+    return { ...loginApi() };
   },
 };
 </script>

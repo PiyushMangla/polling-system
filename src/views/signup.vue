@@ -43,9 +43,7 @@ import { loginApi } from "../composables/loginApi";
 export default {
   name: "signIn",
   setup() {
-    const { userName, password, role, handleSignup } = loginApi();
-
-    return { userName, password, role, handleSignup };
+    return { ...loginApi() };
   },
 };
 </script>

@@ -3,7 +3,7 @@
     <h1 class="title">Polling System</h1>
     <div class="home" v-if="user">
       <router-link to="/home">Logged in as {{ user.username }}</router-link>
-      <button @click.prevent="logout">logout</button>
+      <button @click="logout">logout</button>
     </div>
     <div class="logins" v-if="!user">
       <router-link to="/">Login</router-link>
@@ -17,9 +17,7 @@ import { loginApi } from "../composables/loginApi.js";
 export default {
   name: "navBar",
   setup() {
-    const { user, logout } = loginApi();
-
-    return { user, logout };
+    return { ...loginApi() };
   },
 };
 </script>
