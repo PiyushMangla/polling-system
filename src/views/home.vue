@@ -1,10 +1,13 @@
 <template>
-  <div>This is home page</div>
+<pollList />
 </template>
 
 <script>
+import pollList from "../components/pollList.vue"
 export default {
   name: "homeView",
-  setup() {},
+  components: {pollList},
+  setup() {
+  },
 };
 </script>

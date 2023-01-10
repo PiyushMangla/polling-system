@@ -1,0 +1,52 @@
+import { ref, computed } from "vue"
+import { useStore } from 'vuex'
+import { v4 } from "uuid"
+import { useRouter } from "vue-router"
+
+export const loginApi = () => {
+    const userName = ref('')
+    const password = ref('')
+    const store = useStore()
+    const router = useRouter()
+    // const error = ref('')
+    const role = ref('')
+
+    //gettin user from store
+    const user = computed(() => {
+        return store.state.user
+    })
+
+    // for login user
+    // const handleLogin = () => {
+
+    // store.dispatch("login")
+    //     // try {
+    //     //     await store.dispatch("login", {
+    //     //         username: userName.value,
+    //     //         password: password.value,
+    //     //     });
+    //     //     // router.push('/home')
+    //     // } catch (err) {
+    //     //     error.value = err.message
+    //     //     console.log(error.value, user)
+    //     // }
+    // };
+
+    // for signin 
+    const handleSignin = () => {
+        store.dispatch("signin", {
+            username: userName.value,
+            password: password.value,
+            role: role.value,
+            id: v4()
+        })
+        router.push('/home')
+    }
+
+    const logout = () => {
+        store.commit('setUser', null)
+        router.push('/signin')
+    }
+
+    return { userName, password, role, handleSignin, user, logout }
+}
