@@ -1,8 +1,8 @@
 import { v4 } from 'uuid'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 export const pollApi = () => {
-    const polls = ref([
+    const polls = reactive([
         {
             title: "first Poll",
             options: [{ option: 'opt1', vote: 0 }, { option: 'opt2', vote: 4 }, { option: 'opt3', vote: 5 }, { option: 'opt4', vote: 9 }],
