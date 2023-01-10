@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background-color: #d0dadb;
+
+}
+
+nav h1 {
+    width: 75%;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+nav a {
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+nav a.router-link-active {
+    background-color: #42b983;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+}
+
+.formWrapper {
+    width: 80%;
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+form h3 {
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+.formLabel {
+    width: 80%;
+    margin-top: 4%;
+    font-size: 18px;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+.formInput {
+    display: block;
+    width: 50%;
+    margin-top: 15px;
+    height: 30px;
+    font-size: 18px;
+    color: gray;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #bec2c4;
+    padding-left: 10px;
+}
+
+.formRadio {
+    margin-top: 10px;
+}
+
+.formBtn {
+    width: 120px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 40px;
+    height: 40px;
+    border-radius: 25px;
+    background-color: #6ea4e6;
+    color: white;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
