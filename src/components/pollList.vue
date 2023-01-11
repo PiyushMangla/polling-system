@@ -1,4 +1,5 @@
 <template>
+hello
   <div class="home">
     <div class="pollList">
       <div class="poll" v-for="poll in polls" :key="poll.id">

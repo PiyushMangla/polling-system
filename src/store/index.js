@@ -1,16 +1,16 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-// import { v4 } from 'uuid'
 
 const store = createStore({
   state: {
-    role:null,
+    role: null,
     user: null,
     polls: null,
-    poll: null
+    poll: null,
+    signupError : null
   },
   mutations: {
-    setRole: (state ,payload) => {
+    setRole: (state, payload) => {
       state.role = payload
     },
     setUser: (state, payload) => {
@@ -27,39 +27,33 @@ const store = createStore({
   actions: {
 
     //for role
-    async getRole(){
+    async getRole({ commit }) {
       try {
         const res = await axios.get("https://pollapi.innotechteam.in/role/list")
         const data = res.data
-        store.commit('setRole',data)   
+        commit('setRole', data)
       } catch (error) {
         console.log(error)
       }
     },
 
+    //for signup
+    async signup({state},{ email, firstName, lastName, roleId, password }) {
+      try {
+        await axios.post("https://pollapi.innotechteam.in/user/register",
+          { email: email, firstName: firstName, lastName: lastName, roleId: roleId, password: password })
+      } catch (error) {
+        state.signupError =error
+      }
+    },
     //for login
-
-    // try {
-    //   const res = await axios.post("https://secure-refuge-14993.herokuapp.com/login?username=admin&password=admin")
-    //   const data = res.data
-    //   data.map(dat => {
-    //     if (username == dat.username && password == dat.password) {
-    //       commit('setUser', { username, password })
-    //       console.log('user logged in')
-    //     }
-    //     else {
-    //       throw new Error('user not registered')
-    //     }
-    //   })
-    // } catch (error) {
-    //   console.log(error)
-
-    // }
-
-    //sigin api
-    signup: ({ commit }, { username, password, role, id }) => {
-      console.log("user signed in")
-      commit('setUser', { username, password, role, id })
+    async login({state},{ email, password }) {
+      try {
+       await axios.post("https://pollapi.innotechteam.in/user/login",
+          { email: email, password: password })       
+      } catch (error) {
+       console.log(error,state)
+      }
     }
   },
 })
