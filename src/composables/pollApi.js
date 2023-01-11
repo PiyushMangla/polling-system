@@ -8,6 +8,9 @@ export const pollApi = () => {
     const polls = computed(() => {
         return store.state.polls
     })
+    const poll = computed(() => {
+        return store.state.poll
+    })
     const router = useRouter()
     const isState = ref(false)
     const newPoll = reactive({
@@ -17,7 +20,7 @@ export const pollApi = () => {
     })
     let i = 0
     const option = ref('')
-    const addError =ref('')
+    const addError = ref('')
 
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
@@ -38,19 +41,20 @@ export const pollApi = () => {
         }
         //condition for title and options
         if (newPoll.title) {
-            if(newPoll.options.length >2){
-            polls.value.push(newPoll)
-            router.push('/pollList')
-            addError.value = ''
+            if (newPoll.options.length > 2) {
+                polls.value.push(newPoll)
+                router.push('/pollList')
+                addError.value = ''
+            }
+            else {
+                addError.value = "please add atleast 3 options"
+            }
         }
-        else{
-            addError.value = "please add atleast 3 options"
-        }
-        }
-        else{
+        else {
             addError.value = "Please add a title"
         }
     }
+    // keyup function for options input
     const addOptions = (e) => {
         if (e.key === "," && option.value) {
             newPoll.options[i] = {
@@ -61,6 +65,16 @@ export const pollApi = () => {
             i++
         }
     }
+    //to view single poll
+    const showPoll = (key) => {
+        store.commit('setPoll', key)
+        router.push('/showPoll')
+    }
 
-    return { polls, countVote, isState, showAddPoll, addNewPoll, newPoll, addOptions, option ,addError }
+    //to go back to poll list
+    const viewPolls = () => {
+        router.push('/pollList')
+    }
+
+    return { polls, countVote, isState, showAddPoll, addNewPoll, newPoll, addOptions, option, addError, showPoll, poll, viewPolls }
 }

@@ -1,4 +1,4 @@
-import { ref, computed } from "vue"
+import { ref, computed , onMounted } from "vue"
 import { useStore } from 'vuex'
 import { v4 } from "uuid"
 import { useRouter } from "vue-router"
@@ -9,11 +9,19 @@ export const loginApi = () => {
     const store = useStore()
     const router = useRouter()
     // const error = ref('')
-    const role = ref('')
+
+    //get role
+    const roles = computed(() => {
+        return store.state.role
+    })
 
     //gettin user from store
     const user = computed(() => {
         return store.state.user
+    })
+
+    onMounted(async () => {
+       await store.dispatch('getRole')
     })
 
     // for login user
@@ -37,7 +45,7 @@ export const loginApi = () => {
         store.dispatch("signup", {
             username: userName.value,
             password: password.value,
-            role: role.value,
+            // role: role.value,
             id: v4()
         })
         router.push('/home')
@@ -48,5 +56,5 @@ export const loginApi = () => {
         router.push('/signup')
     }
 
-    return { userName, password, role, handleSignup, user, logout }
+    return { userName, password, roles, handleSignup, user, logout }
 }

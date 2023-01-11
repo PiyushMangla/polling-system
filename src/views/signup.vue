@@ -1,13 +1,32 @@
 <template>
   <div class="formWrapper">
+    <div class="wrap"></div>
     <form @submit.prevent="handleSignup">
       <h3>Signup for new User</h3>
 
-      <label class="formLabel">User Name:</label>
+      <label class="formLabel">First Name:</label>
       <input
         type="text"
         class="formInput"
-        placeholder="Enter username"
+        placeholder="Enter firstname"
+        v-model="userName"
+        required
+      />
+
+        <label class="formLabel">Last Name:</label>
+      <input
+        type="text"
+        class="formInput"
+        placeholder="Enter lastname"
+        v-model="userName"
+        required
+      />
+
+       <label class="formLabel">Email:</label>
+      <input
+        type="email"
+        class="formInput"
+        placeholder="Enter lastname"
         v-model="userName"
         required
       />
@@ -21,20 +40,17 @@
         required
       />
 
-      <label class="formLabel">Role:</label>
-      <div class="formRadio">
-        <input type="radio" value="guest" id="guest" v-model="role" /><label
-          >Guest</label
-        >
-      </div>
-
-      <div class="formRadio">
-        <input type="radio" value="admin" id="admin" v-model="role" />
-        <label>Admin</label>
-      </div>
+      <label for="userName" class="formLabel">Role:</label>
+      <select class="formRole">
+        <option >Select A Role</option>
+        <template v-for="role in roles" :key="role.id">
+        <option >{{role.name}}</option>
+        </template>
+      </select>
 
       <button class="formBtn">Sign Up</button>
     </form>
+    <div class="wrap"></div>
   </div>
 </template>
 
