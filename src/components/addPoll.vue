@@ -19,9 +19,12 @@
         @keyup="addOptions"
       />
 
-      <h4 class = addError>{{addError}}</h4>
+      <h4 class="addError">{{ addError }}</h4>
 
-      <button class="pollButton" @click="addNewPoll">Add New Poll</button>
+      <div>
+        <button class="pollButton" @click="addNewPoll">Add New Poll</button>
+        <button class="pollButton" @click="viewPolls">Cancel</button>
+      </div>
     </div>
     <div class="wrap"></div>
   </div>

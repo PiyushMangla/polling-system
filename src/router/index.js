@@ -7,8 +7,9 @@ const routes = [
     redirect: '/pollList',
     component: () => import('../views/home.vue'),
     children: [
-      { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue')  },
-      { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue")  },
+      { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue') },
+      { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue") },
+      { path: '/showPoll', name: 'showPoll', component: () => import("../components/showPoll.vue") },
     ]
   },
   {

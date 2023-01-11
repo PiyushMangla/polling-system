@@ -41,9 +41,11 @@ nav a.router-link-active {
 }
 
 .formWrapper {
-    width: 65%;
-    margin-left: 100px;
-    margin-top: 30px;
+    margin-top: 50px;
+    background-color: #bec2c4;
+    width: 80%;
+    margin-left: 150px;
+    border-radius: 10px;
 }
 
 form {
@@ -51,11 +53,15 @@ form {
     flex-direction: column;
     margin-left: 50px;
     width: 90%;
+    background-color: white;
+    border-radius: 10px;
 }
 
 form h3 {
     font-size: 30px;
     letter-spacing: 1px;
+    margin-left: 40px;
+    margin-top: 20px;
 }
 
 .formLabel {
@@ -64,9 +70,24 @@ form h3 {
     font-size: 18px;
     letter-spacing: 1px;
     display: inline-block;
+    margin-left: 40px;
 }
 
 .formInput {
+    margin-left: 40px;
+    display: block;
+    width: 50%;
+    margin-top: 10px;
+    height: 30px;
+    font-size: 18px;
+    color: gray;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #bec2c4;
+    padding-left: 10px;
+}
+.formRole{
+    margin-left: 40px;
     display: block;
     width: 50%;
     margin-top: 10px;
@@ -79,14 +100,10 @@ form h3 {
     padding-left: 10px;
 }
 
-.formRadio {
-    margin-top: 10px;
-}
-
 .formBtn {
     width: 120px;
     margin-top: 20px;
-    margin-left: 20px;
+    margin-left: 60px;
     margin-bottom: 40px;
     height: 40px;
     border-radius: 25px;
@@ -102,12 +119,14 @@ form h3 {
     border-top: 1px dotted #ddd;
     margin-top: 20px;
     margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .poll h3 {
     color: #00dba4;
     font-size: 30px;
     text-transform: capitalize;
+    cursor: pointer;
 }
 
 .pollOptions {
@@ -147,6 +166,7 @@ form h3 {
     padding: 10px 20px;
     text-align: center;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 .pollWrapper {
@@ -201,11 +221,12 @@ form h3 {
     height: 40px;
     font-size: 18px;
     padding: 10px;
-    margin-left: 20%;
+    margin-left: 50px;
     color: white;
     background-color: #42b983;
     border: none;
     border-radius: 20px;
+    cursor: pointer;
 }
 .addError{
     margin-top: 10px;

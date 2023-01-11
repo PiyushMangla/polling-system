@@ -2,7 +2,7 @@
   <div class="home">
     <div class="pollList">
       <div class="poll" v-for="poll in polls" :key="poll.id">
-        <h3>{{ poll.title }}</h3>
+        <h3 @click="showPoll(polls.indexOf(poll))">{{ poll.title }}</h3>
         <div
           class="pollOptions"
           v-for="option in poll.options"

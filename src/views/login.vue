@@ -1,5 +1,6 @@
 <template>
   <div class="formWrapper">
+    <div class="wrap"></div>
     <form>
       <h3>Log In</h3>
 
@@ -23,6 +24,7 @@
 
       <button class="formBtn">Log In</button>
     </form>
+    <div class="wrap"></div>
   </div>
 </template>
 

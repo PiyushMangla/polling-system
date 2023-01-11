@@ -1,37 +1,41 @@
 import { createStore } from 'vuex'
-import { v4 } from 'uuid'
+import axios from 'axios'
+// import { v4 } from 'uuid'
 
 const store = createStore({
   state: {
+    role:null,
     user: null,
-    polls: [
-      {
-          title: "first Poll",
-          options: [{ option: 'opt1', vote: 0 }, { option: 'opt2', vote: 4 }, { option: 'opt3', vote: 5 }, { option: 'opt4', vote: 9 }],
-          id: v4()
-      },
-      {
-          title: "second Poll",
-          options: [{ option: 'opt1', vote: 7 }, { option: 'opt2', vote: 6 }, { option: 'opt3', vote: 4 }, { option: 'opt4', vote: 2 }],
-          id: v4()
-      },
-      {
-          title: "third Poll",
-          options: [{ option: 'opt1', vote: 6 }, { option: 'opt2', vote: 2 }, { option: 'opt3', vote: 4 }, { option: 'opt4', vote: 3 }],
-          id: v4()
-      }
-  ]
+    polls: null,
+    poll: null
   },
   mutations: {
+    setRole: (state ,payload) => {
+      state.role = payload
+    },
     setUser: (state, payload) => {
       state.user = payload
       console.log("user state changed", state.user)
     },
-    countVote: (state, {keyA , keyB}) => {
+    countVote: (state, { keyA, keyB }) => {
       state.polls[keyB].options[keyA].vote += 1
+    },
+    setPoll: (state, key) => {
+      state.poll = state.polls[key]
     }
   },
   actions: {
+
+    //for role
+    async getRole(){
+      try {
+        const res = await axios.get("https://pollapi.innotechteam.in/role/list")
+        const data = res.data
+        store.commit('setRole',data)   
+      } catch (error) {
+        console.log(error)
+      }
+    },
 
     //for login
 
