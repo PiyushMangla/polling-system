@@ -4,7 +4,12 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../views/home.vue')
+    redirect: '/pollList',
+    component: () => import('../views/home.vue'),
+    children: [
+      { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue')  },
+      { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue")  },
+    ]
   },
   {
     path: '/signup',

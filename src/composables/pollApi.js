@@ -1,31 +1,66 @@
 import { v4 } from 'uuid'
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 export const pollApi = () => {
-    const polls = reactive([
-        {
-            title: "first Poll",
-            options: [{ option: 'opt1', vote: 0 }, { option: 'opt2', vote: 4 }, { option: 'opt3', vote: 5 }, { option: 'opt4', vote: 9 }],
-            id: v4()
-        },
-        {
-            title: "second Poll",
-            options: [{ option: 'opt1', vote: 7 }, { option: 'opt2', vote: 6 }, { option: 'opt3', vote: 4 }, { option: 'opt4', vote: 2 }],
-            id: v4()
-        },
-        {
-            title: "third Poll",
-            options: [{ option: 'opt1', vote: 6 }, { option: 'opt2', vote: 2 }, { option: 'opt3', vote: 4 }, { option: 'opt4', vote: 3 }],
-            id: v4()
-        }
-    ])
-
+    const store = useStore()
+    const polls = computed(() => {
+        return store.state.polls
+    })
+    const router = useRouter()
     const isState = ref(false)
-
+    const newPoll = reactive({
+        title: '',
+        options: [],
+        id: v4()
+    })
+    let i = 0
+    const option = ref('')
+    const addError =ref('')
 
     const countVote = (keyA, keyB) => {
-        polls.value[keyB].options[keyA].vote += 1
+        store.commit('countVote', { keyA, keyB })
     }
 
-    return { polls, countVote, isState }
+    const showAddPoll = () => {
+        router.push('/addPoll')
+    }
+
+    // adding new poll function
+    const addNewPoll = () => {
+        //adding option to the list
+        if (option.value) {
+            newPoll.options[i] = {
+                option: option.value,
+                vote: 0
+            }
+        }
+        //condition for title and options
+        if (newPoll.title) {
+            if(newPoll.options.length >2){
+            polls.value.push(newPoll)
+            router.push('/pollList')
+            addError.value = ''
+        }
+        else{
+            addError.value = "please add atleast 3 options"
+        }
+        }
+        else{
+            addError.value = "Please add a title"
+        }
+    }
+    const addOptions = (e) => {
+        if (e.key === "," && option.value) {
+            newPoll.options[i] = {
+                option: option.value,
+                vote: 0
+            }
+            option.value = ''
+            i++
+        }
+    }
+
+    return { polls, countVote, isState, showAddPoll, addNewPoll, newPoll, addOptions, option ,addError }
 }

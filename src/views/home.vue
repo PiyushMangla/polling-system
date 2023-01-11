@@ -1,12 +1,11 @@
 <template>
-<pollList />
+<router-link to="/pollList"></router-link>
+<router-view />
 </template>
 
 <script>
-import pollList from "../components/pollList.vue"
 export default {
   name: "homeView",
-  components: {pollList},
   setup() {
   },
 };

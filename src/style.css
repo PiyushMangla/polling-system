@@ -126,3 +126,90 @@ form h3 {
 .pollOptions input {
     margin-left: 20px;
 }
+
+.home {
+    position: relative;
+}
+
+.addPoll {
+    position: absolute;
+    right: 0;
+    top: -10px;
+}
+
+.addPollBtn {
+    margin-right: 20px;
+    background-color: #69bbfa;
+    color: white;
+    border: none;
+    height: 40px;
+    font-size: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.pollWrapper {
+    margin-top: 50px;
+    background-color: #bec2c4;
+    width: 80%;
+    margin-left: 150px;
+    border-radius: 10px;
+}
+
+.wrap {
+    height: 50px;
+}
+
+.pollForm {
+    width: 70%;
+    margin-left: 170px;
+    background-color: white;
+    border-radius: 10px;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.pollLabel {
+    margin-top: 30px;
+    margin-left: 40px;
+    font-size: 25px;
+    letter-spacing: 1px;
+    display: block;
+}
+
+.pollInput {
+    display: block;
+    margin-left: 40px;
+    width: 50%;
+    margin-top: 10px;
+    height: 30px;
+    font-size: 18px;
+    color: gray;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #bec2c4;
+    padding-left: 10px;
+}
+
+.pollButton {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    width: 150px;
+    height: 40px;
+    font-size: 18px;
+    padding: 10px;
+    margin-left: 20%;
+    color: white;
+    background-color: #42b983;
+    border: none;
+    border-radius: 20px;
+}
+.addError{
+    margin-top: 10px;
+    margin-left: 40px;
+    color: crimson;
+    
+}
