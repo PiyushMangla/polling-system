@@ -3,15 +3,15 @@ import axios from 'axios'
 
 const store = createStore({
   state: {
-    role: null,
+    roles: null,
     user: null,
     polls: null,
     poll: null,
     signupError : null
   },
   mutations: {
-    setRole: (state, payload) => {
-      state.role = payload
+    setRoles: (state, payload) => {
+      state.roles = payload
     },
     setUser: (state, payload) => {
       state.user = payload
@@ -27,11 +27,11 @@ const store = createStore({
   actions: {
 
     //for role
-    async getRole({ commit }) {
+    async getRoles({ commit }) {
       try {
         const res = await axios.get("https://pollapi.innotechteam.in/role/list")
         const data = res.data
-        commit('setRole', data)
+        commit('setRoles', data)
       } catch (error) {
         console.log(error)
       }

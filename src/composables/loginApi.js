@@ -16,10 +16,10 @@ export const loginApi = () => {
 
     //get role
     const roles = computed(() => {
-        return store.state.role
+        return store.state.roles
     })
     onMounted(async () => {
-        await store.dispatch('getRole')
+        await store.dispatch('getRoles')
     })
 
     //gettin user from store
