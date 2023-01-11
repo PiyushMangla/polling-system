@@ -41,7 +41,7 @@ nav a.router-link-active {
 }
 
 .formWrapper {
-    width: 80%;
+    width: 65%;
     margin-left: 100px;
     margin-top: 30px;
 }
@@ -49,7 +49,8 @@ nav a.router-link-active {
 form {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    margin-left: 50px;
+    width: 90%;
 }
 
 form h3 {
@@ -59,7 +60,7 @@ form h3 {
 
 .formLabel {
     width: 80%;
-    margin-top: 4%;
+    margin-top: 20px;
     font-size: 18px;
     letter-spacing: 1px;
     display: inline-block;
@@ -68,7 +69,7 @@ form h3 {
 .formInput {
     display: block;
     width: 50%;
-    margin-top: 15px;
+    margin-top: 10px;
     height: 30px;
     font-size: 18px;
     color: gray;
@@ -94,4 +95,34 @@ form h3 {
     font-size: 15px;
     border: none;
     cursor: pointer;
+}
+
+.poll {
+    padding: 10px;
+    border-top: 1px dotted #ddd;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.poll h3 {
+    color: #00dba4;
+    font-size: 30px;
+    text-transform: capitalize;
+}
+
+.pollOptions {
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.pollOptions span {
+    margin-left: 10px;
+}
+
+.pollOptions input {
+    margin-left: 20px;
 }

@@ -4,10 +4,22 @@
       <h3>Log In</h3>
 
       <label class="formLabel">User Name:</label>
-      <input type="text" class="formInput" required />
+      <input
+        type="text"
+        class="formInput"
+        placeholder="Enter user Name"
+        v-model="userName"
+        required
+      />
 
       <label for="userName" class="formLabel">Password:</label>
-      <input type="password" class="formInput" required />
+      <input
+        type="password"
+        class="formInput"
+        placeholder="Enter password"
+        v-model="password"
+        required
+      />
 
       <button class="formBtn">Log In</button>
     </form>
@@ -15,8 +27,11 @@
 </template>
 
 <script>
+import { loginApi } from "../composables/loginApi.js";
 export default {
   name: "logIn",
-  setup() {},
+  setup() {
+    return { ...loginApi() };
+  },
 };
 </script>
