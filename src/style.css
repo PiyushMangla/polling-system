@@ -117,6 +117,12 @@ form h3 {
     cursor: pointer;
 }
 
+.Error{
+    margin-left: 40px;
+    margin-top: 10px;
+    color: crimson;
+}
+
 .poll {
     padding: 10px;
     border-top: 1px dotted #ddd;

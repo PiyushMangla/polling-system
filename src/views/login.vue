@@ -6,7 +6,7 @@
 
       <label class="formLabel">Email Id:</label>
       <input
-        type="text"
+        type="email"
         class="formInput"
         placeholder="Enter Email"
         v-model="signUser.email"
@@ -21,8 +21,8 @@
         v-model="signUser.password"
         required
       />
-
-      <button class="formBtn" @click="handleLogin">Log In</button>
+      <span class="Error">{{ loginError }} </span>
+      <button class="formBtn" @click.prevent="handleLogin">Log In</button>
     </form>
     <div class="wrap"></div>
   </div>

@@ -27,12 +27,20 @@ export const loginApi = () => {
         return store.state.user
     })
 
+    //errors
     const signError = computed(() => {
         return store.state.signupError
+    })
+    const signErr = computed(() => {
+        return store.state.signErr
+    })
+    const loginError = computed(() => {
+        return store.state.loginError
     })
 
     // for signup
     const handleSignup = async () => {
+        console.log('handleSignup')
         try {
             await store.dispatch('signup', {
                 email: signUser.email,
@@ -41,8 +49,11 @@ export const loginApi = () => {
                 firstName: signUser.firstName,
                 lastName: signUser.lastName
             })
+            if (!signError.value && !signErr.value) {
+                router.push('/')
+            }
         } catch (error) {
-            console.log(error)
+            console.log('error')
         }
     }
 
@@ -54,6 +65,9 @@ export const loginApi = () => {
                 password: signUser.password,
             })
             console.log('logged in')
+            if (!loginError.value) {
+                router.push('/home')
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -62,8 +76,8 @@ export const loginApi = () => {
 
     const logout = () => {
         store.commit('setUser', null)
-        router.push('/signup')
+        router.push('/')
     }
 
-    return { signUser, roles, user, logout, handleSignup, signError, handleLogin }
+    return { signUser, roles, user, logout, handleSignup, signError, handleLogin, signErr, loginError }
 }

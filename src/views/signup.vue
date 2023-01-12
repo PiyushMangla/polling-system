@@ -13,7 +13,7 @@
         required
       />
 
-        <label class="formLabel">Last Name:</label>
+      <label class="formLabel">Last Name:</label>
       <input
         type="text"
         class="formInput"
@@ -22,7 +22,7 @@
         required
       />
 
-       <label class="formLabel">Email:</label>
+      <label class="formLabel">Email:</label>
       <input
         type="email"
         class="formInput"
@@ -42,13 +42,21 @@
 
       <label for="userName" class="formLabel">Role:</label>
       <select class="formRole" v-model="signUser.roleId" required>
-        <option >Select A Role</option>
+        <option>Select A Role</option>
         <template v-for="role in roles" :key="role.id">
-        <option :value="role.id" >{{role.name}}</option>
+          <option :value="role.id">{{ role.name }}</option>
         </template>
       </select>
+      <div v-for="sign in signError" :key="sign" class="Error">
+        <span>{{ sign.firstName }}</span>
+        <span>{{ sign.lastName }}</span>
+        <span>{{ sign.email }}</span>
+        <span>{{ sign.password }}</span>
+        <span>{{ sign.roleId }}</span>
+      </div>
+      <span class="Error">{{ signErr }}</span>
 
-      <button class="formBtn" @click="handleSignup">Sign Up</button>
+      <button class="formBtn">Sign Up</button>
     </form>
     <div class="wrap"></div>
   </div>
