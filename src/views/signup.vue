@@ -9,7 +9,7 @@
         type="text"
         class="formInput"
         placeholder="Enter firstname"
-        v-model="userName"
+        v-model="signUser.firstName"
         required
       />
 
@@ -18,7 +18,7 @@
         type="text"
         class="formInput"
         placeholder="Enter lastname"
-        v-model="userName"
+        v-model="signUser.lastName"
         required
       />
 
@@ -26,8 +26,8 @@
       <input
         type="email"
         class="formInput"
-        placeholder="Enter lastname"
-        v-model="userName"
+        placeholder="Enter Email"
+        v-model="signUser.email"
         required
       />
 
@@ -36,19 +36,19 @@
         type="password"
         class="formInput"
         placeholder="Enter password"
-        v-model="password"
+        v-model="signUser.password"
         required
       />
 
       <label for="userName" class="formLabel">Role:</label>
-      <select class="formRole">
+      <select class="formRole" v-model="signUser.roleId" required>
         <option >Select A Role</option>
         <template v-for="role in roles" :key="role.id">
-        <option >{{role.name}}</option>
+        <option :value="role.id" >{{role.name}}</option>
         </template>
       </select>
 
-      <button class="formBtn">Sign Up</button>
+      <button class="formBtn" @click="handleSignup">Sign Up</button>
     </form>
     <div class="wrap"></div>
   </div>

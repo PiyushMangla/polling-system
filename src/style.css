@@ -76,7 +76,7 @@ form h3 {
 .formInput {
     margin-left: 40px;
     display: block;
-    width: 50%;
+    width: 70%;
     margin-top: 10px;
     height: 30px;
     font-size: 18px;
@@ -89,7 +89,7 @@ form h3 {
 .formRole{
     margin-left: 40px;
     display: block;
-    width: 50%;
+    width: 70%;
     margin-top: 10px;
     height: 30px;
     font-size: 18px;
@@ -98,6 +98,9 @@ form h3 {
     border: none;
     border-bottom: 1px solid #bec2c4;
     padding-left: 10px;
+}
+.formRole option{
+    text-transform: capitalize;
 }
 
 .formBtn {

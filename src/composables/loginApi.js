@@ -1,18 +1,25 @@
-import { ref, computed , onMounted } from "vue"
+import { computed, onMounted, reactive } from "vue"
 import { useStore } from 'vuex'
-import { v4 } from "uuid"
 import { useRouter } from "vue-router"
 
 export const loginApi = () => {
-    const userName = ref('')
-    const password = ref('')
     const store = useStore()
     const router = useRouter()
-    // const error = ref('')
+    const signUser = reactive({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        roleId: null,
+    })
+
 
     //get role
     const roles = computed(() => {
-        return store.state.role
+        return store.state.roles
+    })
+    onMounted(async () => {
+        await store.dispatch('getRoles')
     })
 
     //gettin user from store
@@ -20,41 +27,43 @@ export const loginApi = () => {
         return store.state.user
     })
 
-    onMounted(async () => {
-       await store.dispatch('getRole')
+    const signError = computed(() => {
+        return store.state.signupError
     })
 
-    // for login user
-    // const handleLogin = () => {
-
-    // store.dispatch("login")
-    //     // try {
-    //     //     await store.dispatch("login", {
-    //     //         username: userName.value,
-    //     //         password: password.value,
-    //     //     });
-    //     //     // router.push('/home')
-    //     // } catch (err) {
-    //     //     error.value = err.message
-    //     //     console.log(error.value, user)
-    //     // }
-    // };
-
-    // for signin 
-    const handleSignup = () => {
-        store.dispatch("signup", {
-            username: userName.value,
-            password: password.value,
-            // role: role.value,
-            id: v4()
-        })
-        router.push('/home')
+    // for signup
+    const handleSignup = async () => {
+        try {
+            await store.dispatch('signup', {
+                email: signUser.email,
+                password: signUser.password,
+                roleId: signUser.roleId,
+                firstName: signUser.firstName,
+                lastName: signUser.lastName
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    //for login
+    const handleLogin = async () => {
+        try {
+            await store.dispatch('login', {
+                email: signUser.email,
+                password: signUser.password,
+            })
+            console.log('logged in')
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
 
     const logout = () => {
         store.commit('setUser', null)
         router.push('/signup')
     }
 
-    return { userName, password, roles, handleSignup, user, logout }
+    return { signUser, roles, user, logout, handleSignup, signError, handleLogin }
 }
