@@ -1,10 +1,12 @@
-import { computed, onMounted, reactive } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import { useStore } from 'vuex'
 import { useRouter } from "vue-router"
 
 export const loginApi = () => {
     const store = useStore()
     const router = useRouter()
+
+    //getting new user datils
     const signUser = reactive({
         firstName: '',
         lastName: '',
@@ -12,19 +14,29 @@ export const loginApi = () => {
         password: '',
         roleId: null,
     })
-
+    const isLoading = ref(false)
+    const isSubmitted = ref(false)
 
     //get role
     const roles = computed(() => {
         return store.state.roles
     })
+    
+    //get user and userToken
+    const user = computed(() => {
+        return store.state.user
+    })
+    const userToken = computed(() => {
+        return store.state.userToken
+    })
+
+
     onMounted(async () => {
         await store.dispatch('getRoles')
     })
-
-    //gettin user from store
-    const user = computed(() => {
-        return store.state.user
+    onMounted( () => {
+        store.commit('setUser')
+        store.commit('userToken')
     })
 
     //errors
@@ -41,6 +53,7 @@ export const loginApi = () => {
     // for signup
     const handleSignup = async () => {
         console.log('handleSignup')
+        isLoading.value = true
         try {
             await store.dispatch('signup', {
                 email: signUser.email,
@@ -50,11 +63,17 @@ export const loginApi = () => {
                 lastName: signUser.lastName
             })
             if (!signError.value && !signErr.value) {
-                router.push('/')
+                isSubmitted.value = true
             }
         } catch (error) {
             console.log('error')
+        } finally {
+            isLoading.value = false
         }
+    }
+    const formSubmit = () => {
+        isSubmitted.value = false
+        router.push('/')
     }
 
     //for login
@@ -64,7 +83,6 @@ export const loginApi = () => {
                 email: signUser.email,
                 password: signUser.password,
             })
-            console.log('logged in')
             if (!loginError.value) {
                 router.push('/home')
             }
@@ -73,11 +91,15 @@ export const loginApi = () => {
         }
     }
 
-
+    //for logout
     const logout = () => {
-        store.commit('setUser', null)
+        localStorage.setItem('user' , JSON.stringify(null))
+        localStorage.setItem('userToken' , JSON.stringify(null))
         router.push('/')
     }
 
-    return { signUser, roles, user, logout, handleSignup, signError, handleLogin, signErr, loginError }
+    return {
+        user, userToken, signUser, roles, logout, handleSignup, signError,
+        handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
+    }
 }

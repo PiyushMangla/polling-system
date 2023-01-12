@@ -55,17 +55,24 @@
         <span>{{ sign.roleId }}</span>
       </div>
       <span class="Error">{{ signErr }}</span>
-
-      <button class="formBtn">Sign Up</button>
+      <button class="formBtn">
+        Sign Up
+        <span v-if="isLoading"><i class="fa-solid fa-house"></i></span>
+      </button>
     </form>
     <div class="wrap"></div>
+    <successToast class="successToast" v-if="isSubmitted">
+      <template v-slot:content>You have successfully registered</template>
+    </successToast>
   </div>
 </template>
 
 <script>
 import { loginApi } from "../composables/loginApi";
+import successToast from "../components/successToast.vue";
 export default {
   name: "signIn",
+  components: { successToast },
   setup() {
     return { ...loginApi() };
   },

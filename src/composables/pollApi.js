@@ -1,17 +1,32 @@
 import { v4 } from 'uuid'
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed ,onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
 export const pollApi = () => {
     const store = useStore()
+    const router = useRouter()
+
+    //get user and userToken
+    const user = computed(() => {
+        return store.state.user
+    })
+    const userToken = computed(() => {
+        return store.state.userToken
+    })
+    onMounted( () => {
+        store.commit('setUser')
+        store.commit('userToken')
+    })
+
+    //getting poll list
     const polls = computed(() => {
         return store.state.polls
     })
+    //getting single poll
     const poll = computed(() => {
         return store.state.poll
     })
-    const router = useRouter()
     const isState = ref(false)
     const newPoll = reactive({
         title: '',
@@ -21,6 +36,10 @@ export const pollApi = () => {
     let i = 0
     const option = ref('')
     const addError = ref('')
+
+    // onMounted(async () => {
+    //     await store.dispatch('getPolls', userToken.value)
+    // })
 
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
@@ -76,5 +95,5 @@ export const pollApi = () => {
         router.push('/pollList')
     }
 
-    return { polls, countVote, isState, showAddPoll, addNewPoll, newPoll, addOptions, option, addError, showPoll, poll, viewPolls }
+    return {  polls,user ,userToken, countVote, isState, showAddPoll,  addNewPoll, newPoll, addOptions, option, addError, showPoll, poll, viewPolls }
 }

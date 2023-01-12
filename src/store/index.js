@@ -1,10 +1,11 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-
+console.log(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API)
 const store = createStore({
   state: {
     roles: null,
     user: null,
+    userToken: null,
     polls: null,
     poll: null,
     signupError: null,
@@ -15,9 +16,14 @@ const store = createStore({
     setRoles: (state, payload) => {
       state.roles = payload
     },
-    setUser: (state, payload) => {
-      state.user = payload
-      console.log("user state changed", state.user)
+    setUser: (state) => {
+      state.user = JSON.parse(localStorage.getItem('user'))
+    },
+    setToken: (state) => {
+      state.user = JSON.parse(localStorage.getItem('userToken'))
+    },
+    setPolls: (state, payload) => {
+      state.polls = payload
     },
     countVote: (state, { keyA, keyB }) => {
       state.polls[keyB].options[keyA].vote += 1
@@ -27,7 +33,6 @@ const store = createStore({
     }
   },
   actions: {
-
     //for role
     async getRoles({ commit }) {
       try {
@@ -42,10 +47,10 @@ const store = createStore({
     //for signup
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
-        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_SiGNUP_API,
-          { email: email, firstName: firstName, lastName: lastName, roleId: roleId, password: password })
         state.signErr = null
         state.signupError = null
+        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_SiGNUP_API,
+          { email: email, firstName: firstName, lastName: lastName, roleId: roleId, password: password })
       } catch (error) {
         if (error.response.data.errors) {
           state.signupError = error.response.data.errors
@@ -56,17 +61,35 @@ const store = createStore({
         }
       }
     },
+
     //for login
-    async login({ state }, { email, password }) {
+    async login({ state}, { email, password }) {
       try {
         await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_API,
           { email: email, password: password }).then(res => {
-            this.commit('setUser', res.data.user)
+            localStorage.setItem('userToken', JSON.stringify(res.data.token))
+            localStorage.setItem('user', JSON.stringify(res.data.user))
             state.loginError = null
           })
-
       } catch (error) {
         state.loginError = error.response.data.message
+      }
+    },
+
+    //for polls list
+    async getPolls({ state, commit },) {
+      try {
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API,
+          {
+            headers: {
+              'token': state.userToken
+            }
+          }).then(res => {
+            commit('setPolls', res.data)
+            console.log(state.polls)
+          })
+      } catch (error) {
+        console.log(error)
       }
     }
   },

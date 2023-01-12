@@ -5,7 +5,7 @@
       <router-link to="/home">Logged in as {{ user.firstName }} </router-link>
       <button @click="logout">logout</button>
     </div>
-    <div class="logins" v-if="!user">
+    <div class="logins" v-else>
       <router-link to="/">Login</router-link>
       <router-link to="/signup">Signup</router-link>
     </div>
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import { loginApi } from "../composables/loginApi.js";
+import { loginApi } from '@/composables/loginApi.js';
 export default {
   name: "navBar",
   setup() {
-    return { ...loginApi() };
+    return {  ...loginApi() };
   },
 };
 </script>
