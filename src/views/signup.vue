@@ -13,7 +13,7 @@
         required
       />
 
-        <label class="formLabel">Last Name:</label>
+      <label class="formLabel">Last Name:</label>
       <input
         type="text"
         class="formInput"
@@ -22,7 +22,7 @@
         required
       />
 
-       <label class="formLabel">Email:</label>
+      <label class="formLabel">Email:</label>
       <input
         type="email"
         class="formInput"
@@ -42,22 +42,37 @@
 
       <label for="userName" class="formLabel">Role:</label>
       <select class="formRole" v-model="signUser.roleId" required>
-        <option >Select A Role</option>
+        <option>Select A Role</option>
         <template v-for="role in roles" :key="role.id">
-        <option :value="role.id" >{{role.name}}</option>
+          <option :value="role.id">{{ role.name }}</option>
         </template>
       </select>
-
-      <button class="formBtn" @click="handleSignup">Sign Up</button>
+      <div v-for="sign in signError" :key="sign" class="Error">
+        <span>{{ sign.firstName }}</span>
+        <span>{{ sign.lastName }}</span>
+        <span>{{ sign.email }}</span>
+        <span>{{ sign.password }}</span>
+        <span>{{ sign.roleId }}</span>
+      </div>
+      <span class="Error">{{ signErr }}</span>
+      <button class="formBtn">
+        Sign Up
+        <span v-if="isLoading"><i class="fa-solid fa-house"></i></span>
+      </button>
     </form>
     <div class="wrap"></div>
+    <successToast class="successToast" v-if="isSubmitted">
+      <template v-slot:content>You have successfully registered</template>
+    </successToast>
   </div>
 </template>
 
 <script>
 import { loginApi } from "../composables/loginApi";
+import successToast from "../components/successToast.vue";
 export default {
   name: "signIn",
+  components: { successToast },
   setup() {
     return { ...loginApi() };
   },

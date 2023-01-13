@@ -46,6 +46,7 @@ nav a.router-link-active {
     width: 80%;
     margin-left: 150px;
     border-radius: 10px;
+    position: relative;
 }
 
 form {
@@ -86,7 +87,8 @@ form h3 {
     border-bottom: 1px solid #bec2c4;
     padding-left: 10px;
 }
-.formRole{
+
+.formRole {
     margin-left: 40px;
     display: block;
     width: 70%;
@@ -99,7 +101,8 @@ form h3 {
     border-bottom: 1px solid #bec2c4;
     padding-left: 10px;
 }
-.formRole option{
+
+.formRole option {
     text-transform: capitalize;
 }
 
@@ -115,6 +118,12 @@ form h3 {
     font-size: 15px;
     border: none;
     cursor: pointer;
+}
+
+.Error {
+    margin-left: 40px;
+    margin-top: 10px;
+    color: crimson;
 }
 
 .poll {
@@ -231,9 +240,39 @@ form h3 {
     border-radius: 20px;
     cursor: pointer;
 }
-.addError{
+
+.addError {
     margin-top: 10px;
     margin-left: 40px;
     color: crimson;
+
+}
+.toastWrap{
+    background-image: linear-gradient( to right, #4d9c4df5, #b4d6bb);
+    width: 45%;
+    height: 220px;
+    border-radius: 10px;
+    text-align: center;
+    align-items: center;
     
+}
+.toastContent{
+    padding: 20px 40px ;
+    font-size: 40px;
+    color: #0e3b37;
+    font-weight: bolder;
+}
+.toastBtn{
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.successToast{
+    position: absolute;
+    top: 200px;
+    left: 300px
 }
