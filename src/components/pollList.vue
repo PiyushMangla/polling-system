@@ -2,7 +2,15 @@
   <div class="pollHome">
     <div class="pollList">
       <div class="poll" v-for="poll in polls" :key="poll.id">
-        <h3 @click="showPoll(polls.indexOf(poll))">{{ poll.title }}</h3>
+        <h3>
+          {{ poll.title }}
+          <span class="pollIcons">
+            <span><i class="fa fa-trash"></i></span>
+            <span @click="showPoll(polls.indexOf(poll))"
+              ><i class="fa fa-pen"></i
+            ></span>
+          </span>
+        </h3>
         <div
           class="pollOptions"
           v-for="option in poll.optionList"

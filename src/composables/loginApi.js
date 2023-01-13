@@ -1,4 +1,4 @@
-import { computed, onMounted, reactive, ref } from "vue"
+import { computed, onMounted,  reactive, ref } from "vue"
 import { useStore } from 'vuex'
 import { useRouter } from "vue-router"
 
@@ -43,6 +43,7 @@ export const loginApi = () => {
     })
 
     //errors
+    const signUperr = ref('')
     const signError = computed(() => {
         return store.state.signupError
     })
@@ -53,31 +54,50 @@ export const loginApi = () => {
         return store.state.loginError
     })
 
+    const loginBtn = ref(true)
+
     // for signup
     const handleSignup = async () => {
-        isLoading.value = true
-        try {
-            await store.dispatch('signup', {
-                email: signUser.email,
-                password: signUser.password,
-                roleId: signUser.roleId,
-                firstName: signUser.firstName,
-                lastName: signUser.lastName
-            })
-            if (!signError.value && !signErr.value) {
-                isSubmitted.value = true
+
+        if (signUser.firstName.length > 5) {
+            if (signUser.lastName.length > 5) {
+                if (signUser.password.length > 8) {
+                    isLoading.value = true
+                    signUperr.value = ''
+                    try {
+                        await store.dispatch('signup', {
+                            email: signUser.email,
+                            password: signUser.password,
+                            roleId: signUser.roleId,
+                            firstName: signUser.firstName,
+                            lastName: signUser.lastName
+                        })
+                        if (!signError.value && !signErr.value) {
+                            isSubmitted.value = true
+                        }
+                        else {
+                            signUperr.value = "Email already exist. Try something else"
+                        }
+                    } catch (error) {
+                        console.log('error')
+                    } finally {
+                        isLoading.value = false
+                    }
+                } else {
+                    signUperr.value = 'Password length should be greater than 8'
+                }
+            } else {
+                signUperr.value = 'Lastname should be greater than 5'
             }
-        } catch (error) {
-            console.log('error')
-        } finally {
-            isLoading.value = false
+        }
+        else {
+            signUperr.value = 'Firstname length should be greater than 5'
         }
     }
     const formSubmit = () => {
         isSubmitted.value = false
         router.push('/')
     }
-
     //for login
     const handleLogin = async () => {
         isLoading.value = true
@@ -90,7 +110,7 @@ export const loginApi = () => {
                 router.push('/home')
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error)
         } finally {
             isLoading.value = false
         }
@@ -104,7 +124,7 @@ export const loginApi = () => {
     }
 
     return {
-        user, userToken, signUser, roles, logout, handleSignup, signError,
+        user, userToken, signUser, roles, logout, handleSignup, signError, signUperr, loginBtn,
         handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
     }
 }

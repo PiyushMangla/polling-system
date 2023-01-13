@@ -47,14 +47,7 @@
           <option :value="role.id">{{ role.name }}</option>
         </template>
       </select>
-      <div v-for="sign in signError" :key="sign" class="Error">
-        <span>{{ sign.firstName }}</span>
-        <span>{{ sign.lastName }}</span>
-        <span>{{ sign.email }}</span>
-        <span>{{ sign.password }}</span>
-        <span>{{ sign.roleId }}</span>
-      </div>
-      <span class="Error">{{ signErr }}</span>
+        <span class="Error">{{ signUperr }}</span>
       <button class="formBtn">
         Sign Up
         <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>

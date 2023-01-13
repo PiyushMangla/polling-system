@@ -1,7 +1,7 @@
 <template>
   <div class="formWrapper">
     <div class="wrap"></div>
-    <form>
+    <form @submit.prevent="handleLogin">
       <h3>Log In</h3>
 
       <label class="formLabel">Email Id:</label>
@@ -22,7 +22,7 @@
         required
       />
       <span class="Error">{{ loginError }} </span>
-      <button class="formBtn" @click.prevent="handleLogin">Log In
+      <button class="formBtn" :disabled="loginBtn">Log In
         <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
       </button>
     </form>
@@ -32,10 +32,20 @@
 
 <script>
 import { loginApi } from "../composables/loginApi.js";
+import { watchEffect} from 'vue'
 export default {
   name: "logIn",
   setup() {
-    return { ...loginApi() };
+    const {loginBtn , isLoading , loginError ,handleLogin ,signUser} = loginApi()
+
+    watchEffect(() => {if(signUser.email && signUser.password){
+        loginBtn.value = false
+    }
+    else{
+        loginBtn.value =true
+    }})
+
+    return {  loginBtn , isLoading , loginError ,handleLogin ,signUser};
   },
 };
 </script>

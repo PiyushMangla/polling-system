@@ -119,11 +119,14 @@ form h3 {
     border: none;
     cursor: pointer;
 }
-
+.formBtn:disabled {
+    opacity: .5;
+}
 .Error {
     margin-left: 40px;
     margin-top: 10px;
     color: crimson;
+    text-shadow: 1px 1px #555;
 }
 
 .poll {
@@ -133,12 +136,21 @@ form h3 {
     margin-left: 20px;
     margin-bottom: 20px;
 }
-
+.pollIcons{
+    margin-left: 20px;
+    color: #bec2c4;
+    font-size: 18px;
+}
+.pollIcons span{
+    margin-left: 15px;
+}
+.pollIcons span:hover{
+    color: #2c3e50
+}
 .poll h3 {
     color: #00dba4;
     font-size: 30px;
     text-transform: capitalize;
-    width: 50%;
     cursor: pointer;
 }
 
@@ -281,7 +293,12 @@ form h3 {
     border-radius: 5px;
     padding: 10px 20px;
 }
-
+.pollOption span{
+    margin-left: 6px;
+}
+.pollOption span:hover{
+    color: whitesmoke
+}
 .addError {
     margin-top: 10px;
     margin-left: 40px;

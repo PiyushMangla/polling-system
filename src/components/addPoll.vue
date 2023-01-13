@@ -24,10 +24,13 @@
       </div>
 
       <div v-for="option in newPoll.options" :key="option" class="pollOption">
-        <h4 @click="deleteNewopt(option)">{{ option }}  <i class="fa fa-trash" ></i></h4>
+        <h4>{{ option }} 
+          <span @click="deleteNewopt(option)"><i class="fa fa-trash" ></i></span>
+          <span @click="updateNewopt(option)"><i class="fa fa-pen" ></i></span>
+        </h4>
       </div>
 
-      <h4 class="addError">{{ addError }}</h4>
+      <h4 class="Error">{{ addError }}</h4>
 
       <div>
         <button class="pollButton" @click.prevent="addNewPoll">Add New Poll</button>

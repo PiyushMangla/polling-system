@@ -53,17 +53,13 @@ export const pollApi = () => {
 
     // adding new poll function
     const addNewPoll = async () => {
-        // //adding option to the list if its in the input field
-        // if (option.value) {
-        //     newPoll.options[i] = option.value
-        // }
         //condition for title and options
         for (let j = 0; j < newPoll.options.length; j++) {
             pollOption[j] = {
                 optionTitle: newPoll.options[j]
             }
         }
-        if (newPoll.title) {
+        if (newPoll.title.length > 10) {
             if (newPoll.options.length > 2) {
                 //api for adding poll
                 try {
@@ -82,7 +78,7 @@ export const pollApi = () => {
             }
         }
         else {
-            addError.value = "Please add a title"
+            addError.value = "Please add a title with atleast 10 characters"
         }
     }
     // keyup function for options input
@@ -102,6 +98,14 @@ export const pollApi = () => {
         });
         i--
     }
+    //to delete option from addpoll
+    const updateNewopt = (key) => {
+        option.value = key
+        newPoll.options = newPoll.options.filter((item) => {
+            return key !== item;
+        });
+        i--
+    }
     //to view single poll
     const showPoll = (key) => {
         store.commit('setPoll', key)
@@ -115,6 +119,6 @@ export const pollApi = () => {
 
     return {
         polls, user, userToken, countVote, isState, showAddPoll, addNewPoll, newPoll,
-        deleteNewopt, addOptions, option, addError, showPoll, poll, viewPolls
+        deleteNewopt, updateNewopt, addOptions, option, addError, showPoll, poll, viewPolls
     }
 }
