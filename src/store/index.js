@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-console.log(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API)
+
 const store = createStore({
   state: {
     roles: null,
@@ -20,7 +20,7 @@ const store = createStore({
       state.user = JSON.parse(localStorage.getItem('user'))
     },
     setToken: (state) => {
-      state.user = JSON.parse(localStorage.getItem('userToken'))
+      state.userToken = JSON.parse(localStorage.getItem('userToken'))
     },
     setPolls: (state, payload) => {
       state.polls = payload
@@ -63,7 +63,7 @@ const store = createStore({
     },
 
     //for login
-    async login({ state}, { email, password }) {
+    async login({ state }, { email, password }) {
       try {
         await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_API,
           { email: email, password: password }).then(res => {
@@ -85,9 +85,25 @@ const store = createStore({
               'token': state.userToken
             }
           }).then(res => {
-            commit('setPolls', res.data)
-            console.log(state.polls)
+            commit('setPolls', res.data.rows)
           })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    //for adding poll
+    async addPoll({ state }, { title, options }) {
+      try {
+        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLADD_API,
+          {
+            title: title,
+            options: options
+          }, {
+          headers: {
+            'token': state.userToken
+          }
+        })
       } catch (error) {
         console.log(error)
       }

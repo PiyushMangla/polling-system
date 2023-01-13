@@ -57,7 +57,7 @@
       <span class="Error">{{ signErr }}</span>
       <button class="formBtn">
         Sign Up
-        <span v-if="isLoading"><i class="fa-solid fa-house"></i></span>
+        <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
       </button>
     </form>
     <div class="wrap"></div>

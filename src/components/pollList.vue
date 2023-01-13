@@ -1,12 +1,12 @@
 <template>
-  <div class="home">
+  <div class="pollHome">
     <div class="pollList">
       <div class="poll" v-for="poll in polls" :key="poll.id">
         <h3 @click="showPoll(polls.indexOf(poll))">{{ poll.title }}</h3>
         <div
           class="pollOptions"
-          v-for="option in poll.options"
-          :key="option.vote"
+          v-for="option in poll.optionList"
+          :key="option.Id"
         >
           <input
             type="checkbox"
@@ -21,13 +21,15 @@
               )
             "
           />
-          <span>{{ option.option }} </span>
-          <span>Votes: {{ option.vote }} </span>
+          <span>{{ option.optionTitle }} </span>
+          <span>Votes: {{ option.voteCount.length }} </span>
         </div>
       </div>
     </div>
     <div class="addPoll">
-      <button class="addPollBtn" @click="showAddPoll">Add a new poll</button>
+      <button class="addPollBtn" @click.prevent="showAddPoll">
+        Add a new poll
+      </button>
     </div>
   </div>
 </template>

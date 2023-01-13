@@ -22,7 +22,9 @@
         required
       />
       <span class="Error">{{ loginError }} </span>
-      <button class="formBtn" @click.prevent="handleLogin">Log In</button>
+      <button class="formBtn" @click.prevent="handleLogin">Log In
+        <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
+      </button>
     </form>
     <div class="wrap"></div>
   </div>

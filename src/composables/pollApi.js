@@ -1,5 +1,4 @@
-import { v4 } from 'uuid'
-import { reactive, ref, computed ,onMounted } from 'vue'
+import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -14,9 +13,9 @@ export const pollApi = () => {
     const userToken = computed(() => {
         return store.state.userToken
     })
-    onMounted( () => {
+    onMounted(() => {
         store.commit('setUser')
-        store.commit('userToken')
+        store.commit('setToken')
     })
 
     //getting poll list
@@ -30,16 +29,18 @@ export const pollApi = () => {
     const isState = ref(false)
     const newPoll = reactive({
         title: '',
-        options: [],
-        id: v4()
+        options: []
     })
+    const pollOption = reactive([])
+    //to add poll
     let i = 0
     const option = ref('')
     const addError = ref('')
 
-    // onMounted(async () => {
-    //     await store.dispatch('getPolls', userToken.value)
-    // })
+    onMounted(async () => {
+        await store.dispatch('getPolls')
+        console.log(polls.value)
+    })
 
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
@@ -49,19 +50,30 @@ export const pollApi = () => {
         router.push('/addPoll')
     }
 
+
     // adding new poll function
-    const addNewPoll = () => {
-        //adding option to the list
-        if (option.value) {
-            newPoll.options[i] = {
-                option: option.value,
-                vote: 0
+    const addNewPoll = async () => {
+        // //adding option to the list if its in the input field
+        // if (option.value) {
+        //     newPoll.options[i] = option.value
+        // }
+        //condition for title and options
+        for (let j = 0; j < newPoll.options.length; j++) {
+            pollOption[j] = {
+                optionTitle: newPoll.options[j]
             }
         }
-        //condition for title and options
         if (newPoll.title) {
             if (newPoll.options.length > 2) {
-                polls.value.push(newPoll)
+                //api for adding poll
+                try {
+                    await store.dispatch('addPoll', {
+                        title: newPoll.title,
+                        options: pollOption
+                    })
+                } catch (error) {
+                    console.log(error)
+                }
                 router.push('/pollList')
                 addError.value = ''
             }
@@ -74,15 +86,21 @@ export const pollApi = () => {
         }
     }
     // keyup function for options input
-    const addOptions = (e) => {
-        if (e.key === "," && option.value) {
-            newPoll.options[i] = {
-                option: option.value,
-                vote: 0
+    const addOptions = () => {
+        if (option.value) {
+            if (!newPoll.options.includes(option.value)) {
+                newPoll.options[i] = option.value
+                i++
             }
             option.value = ''
-            i++
         }
+    }
+    // to delete option from addForm
+    const deleteNewopt = (key) => {
+        newPoll.options = newPoll.options.filter((item) => {
+            return key !== item;
+        });
+        i--
     }
     //to view single poll
     const showPoll = (key) => {
@@ -95,5 +113,8 @@ export const pollApi = () => {
         router.push('/pollList')
     }
 
-    return {  polls,user ,userToken, countVote, isState, showAddPoll,  addNewPoll, newPoll, addOptions, option, addError, showPoll, poll, viewPolls }
+    return {
+        polls, user, userToken, countVote, isState, showAddPoll, addNewPoll, newPoll,
+        deleteNewopt, addOptions, option, addError, showPoll, poll, viewPolls
+    }
 }

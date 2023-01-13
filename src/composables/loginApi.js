@@ -21,7 +21,7 @@ export const loginApi = () => {
     const roles = computed(() => {
         return store.state.roles
     })
-    
+
     //get user and userToken
     const user = computed(() => {
         return store.state.user
@@ -34,9 +34,12 @@ export const loginApi = () => {
     onMounted(async () => {
         await store.dispatch('getRoles')
     })
-    onMounted( () => {
+    onMounted(() => {
         store.commit('setUser')
-        store.commit('userToken')
+        store.commit('setToken')
+        if (user.value) {
+            router.push('/home')
+        }
     })
 
     //errors
@@ -52,7 +55,6 @@ export const loginApi = () => {
 
     // for signup
     const handleSignup = async () => {
-        console.log('handleSignup')
         isLoading.value = true
         try {
             await store.dispatch('signup', {
@@ -78,6 +80,7 @@ export const loginApi = () => {
 
     //for login
     const handleLogin = async () => {
+        isLoading.value = true
         try {
             await store.dispatch('login', {
                 email: signUser.email,
@@ -88,13 +91,15 @@ export const loginApi = () => {
             }
         } catch (error) {
             console.log(error.message)
+        } finally {
+            isLoading.value = false
         }
     }
 
     //for logout
     const logout = () => {
-        localStorage.setItem('user' , JSON.stringify(null))
-        localStorage.setItem('userToken' , JSON.stringify(null))
+        localStorage.setItem('user', JSON.stringify(null))
+        localStorage.setItem('userToken', JSON.stringify(null))
         router.push('/')
     }
 

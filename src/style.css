@@ -21,7 +21,7 @@ nav {
 }
 
 nav h1 {
-    width: 75%;
+    width: 70%;
     letter-spacing: 2px;
     font-weight: bold;
 }
@@ -138,6 +138,7 @@ form h3 {
     color: #00dba4;
     font-size: 30px;
     text-transform: capitalize;
+    width: 50%;
     cursor: pointer;
 }
 
@@ -152,19 +153,20 @@ form h3 {
 
 .pollOptions span {
     margin-left: 10px;
+    text-transform: capitalize;
 }
 
 .pollOptions input {
     margin-left: 20px;
 }
 
-.home {
+.pollHome {
     position: relative;
 }
 
 .addPoll {
     position: absolute;
-    right: 0;
+    right: 20px;
     top: -10px;
 }
 
@@ -181,6 +183,10 @@ form h3 {
     cursor: pointer;
 }
 
+.addPollBtn:hover {
+    background-image: linear-gradient(to right, #599acd, #356182);
+}
+
 .pollWrapper {
     margin-top: 50px;
     background-color: #bec2c4;
@@ -193,14 +199,18 @@ form h3 {
     height: 50px;
 }
 
+.pollwrap {
+    height: 30px;
+}
+
 .pollForm {
     width: 70%;
     margin-left: 170px;
     background-color: white;
     border-radius: 10px;
     color: #555;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
 
 }
 
@@ -226,6 +236,21 @@ form h3 {
     padding-left: 10px;
 }
 
+.inputWrap {
+    position: relative;
+}
+
+.pollIcon {
+    position: absolute;
+    right: 46%;
+    top: 6px;
+    font-size: 20px;
+}
+
+.pollIcon:hover {
+    color: #6ea4e6;
+}
+
 .pollButton {
     margin-top: 30px;
     margin-bottom: 40px;
@@ -239,6 +264,22 @@ form h3 {
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    transition: width 2s;
+}
+
+.pollButton:hover {
+    background-image: linear-gradient(to right, #42b983, #b4d6bb);
+    width: 180px;
+}
+
+.pollOption {
+    margin-left: 40px;
+    display: inline-block;
+    margin-top: 10px;
+    text-transform: capitalize;
+    background-color: #bec2c4;
+    border-radius: 5px;
+    padding: 10px 20px;
 }
 
 .addError {
@@ -247,22 +288,25 @@ form h3 {
     color: crimson;
 
 }
-.toastWrap{
-    background-image: linear-gradient( to right, #4d9c4df5, #b4d6bb);
+
+.toastWrap {
+    background-image: linear-gradient(to right, #4d9c4df5, #b4d6bb);
     width: 45%;
     height: 220px;
     border-radius: 10px;
     text-align: center;
     align-items: center;
-    
+
 }
-.toastContent{
-    padding: 20px 40px ;
+
+.toastContent {
+    padding: 20px 40px;
     font-size: 40px;
     color: #0e3b37;
     font-weight: bolder;
 }
-.toastBtn{
+
+.toastBtn {
     width: 120px;
     height: 40px;
     border: none;
@@ -271,7 +315,8 @@ form h3 {
     font-weight: bold;
     cursor: pointer;
 }
-.successToast{
+
+.successToast {
     position: absolute;
     top: 200px;
     left: 300px

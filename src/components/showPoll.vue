@@ -1,7 +1,7 @@
 <template>
   <div class="poll">
     <h3 @click="viewPolls">{{ poll.title }}</h3>
-    <div class="pollOptions" v-for="option in poll.options" :key="option.vote">
+    <div class="pollOptions" v-for="option in poll.optionList" :key="option.Id">
       <input
         type="checkbox"
         value="true"
@@ -15,8 +15,8 @@
           )
         "
       />
-      <span>{{ option.option }} </span>
-      <span>Votes: {{ option.vote }} </span>
+      <span>{{ option.optionTitle }} </span>
+      <span>Votes: {{ option.voteCount.length }} </span>
     </div>
   </div>
 </template>
