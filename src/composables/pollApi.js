@@ -41,22 +41,32 @@ export const pollApi = () => {
     const option = ref('')
     const addError = ref('')
 
+    // to show polls
     onMounted(async () => {
         await store.dispatch('getPolls', {
             pollPage: pollPage.value
         })
         console.log(polls.value)
     })
+    const scrollState = computed(() => {
+        return store.state.scrollState
+    })
+
+    //scroll function
     const handleScroll = async () => {
-        let element = scrollComponent.value
-        if (element.getBoundingClientRect().bottom < window.innerHeight) {
-            store.commit('setpollPage')
-            await store.dispatch('getPolls', {
-                pollPage: pollPage.value
-            })
+        if (scrollState.value) {
+            let element = scrollComponent.value
+            if (element.getBoundingClientRect().bottom < window.innerHeight) {
+                store.commit('setpollPage')
+                await store.dispatch('getPolls', {
+                    pollPage: pollPage.value
+                })
+            }
         }
     }
 
+
+    //vote count function
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
     }

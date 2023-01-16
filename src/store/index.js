@@ -6,12 +6,13 @@ const store = createStore({
     roles: null,
     user: null,
     userToken: null,
-    polls: null,
+    polls: [],
     poll: null,
     signupError: null,
     signErr: null,
     loginError: null,
-    pollPage: 3
+    pollPage: 1,
+    scrollState: true
   },
   mutations: {
     setRoles: (state, payload) => {
@@ -24,7 +25,7 @@ const store = createStore({
       state.userToken = JSON.parse(localStorage.getItem('userToken'))
     },
     setPolls: (state, payload) => {
-      state.polls = payload
+      state.polls = state.polls.concat(payload)
     },
     setpollPage: (state) => {
       state.pollPage += 1
@@ -82,11 +83,17 @@ const store = createStore({
     },
 
     //for polls list
-    async getPolls({ commit }, { pollPage }) {
+    async getPolls({ state, commit }, { pollPage }) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage)
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage + process.env.VUE_APP_POLLIST_PAGE)
           .then(res => {
-            commit('setPolls', res.data.rows)
+            if (res.data.rows.length) {
+              console.log(res)
+              commit('setPolls', res.data.rows)
+            }
+            else {
+              state.scrollState = false
+            }
           })
       } catch (error) {
         console.log(error)
