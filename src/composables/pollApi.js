@@ -6,17 +6,6 @@ export const pollApi = () => {
     const store = useStore()
     const router = useRouter()
 
-    // //get user and userToken
-    // const user = computed(() => {
-    //     return store.state.user
-    // })
-    // const userToken = computed(() => {
-    //     return store.state.userToken
-    // })
-    onMounted(() => {
-        store.commit('setUser')
-        store.commit('setToken')
-    })
     const scrollComponent = ref(null)
 
     //getting poll list
@@ -57,7 +46,7 @@ export const pollApi = () => {
         if (scrollState.value) {
             let element = scrollComponent.value
             if (element.getBoundingClientRect().bottom < window.innerHeight) {
-                store.commit('setpollPage')
+                store.commit('setPollPage')
                 await store.dispatch('getPolls', {
                     pollPage: pollPage.value
                 })
@@ -157,7 +146,7 @@ export const pollApi = () => {
     }
 
     return {
-        polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent,
-        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll
+        polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent, scrollState,
+        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll,
     }
 }

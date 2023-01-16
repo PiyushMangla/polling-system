@@ -23,20 +23,13 @@ export const loginApi = () => {
     })
 
     //get user and userToken
-    const user = computed(() => {
-        return store.state.user
-    })
-    const userToken = computed(() => {
-        return store.state.userToken
-    })
-
+    const user = JSON.parse(localStorage.getItem('user'))
+    const userToken = JSON.parse(localStorage.getItem('userToken'))
 
     onMounted(async () => {
         await store.dispatch('getRoles')
     })
     onMounted(() => {
-        store.commit('setUser')
-        store.commit('setToken')
         store.state.loginError = null
     })
 

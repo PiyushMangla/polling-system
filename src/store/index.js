@@ -4,30 +4,28 @@ import axios from 'axios'
 const store = createStore({
   state: {
     roles: null,
-    user: null,
-    userToken: null,
     polls: [],
     poll: null,
     signupError: null,
     signErr: null,
     loginError: null,
+    scrollState: true,
     pollPage: 1,
-    scrollState: true
+    pollLimit: 3
   },
   mutations: {
     setRoles: (state, payload) => {
       state.roles = payload
     },
-    setUser: (state) => {
-      state.user = JSON.parse(localStorage.getItem('user'))
-    },
-    setToken: (state) => {
-      state.userToken = JSON.parse(localStorage.getItem('userToken'))
-    },
     setPolls: (state, payload) => {
       state.polls = state.polls.concat(payload)
     },
-    setpollPage: (state) => {
+    filterPolls: (state, payload) => {
+      state.polls = state.polls.filter(poll => {
+        return poll.id != payload
+      })
+    },
+    setPollPage: (state) => {
       state.pollPage += 1
     },
     countVote: (state, { keyA, keyB }) => {
@@ -41,7 +39,7 @@ const store = createStore({
     //for role
     async getRoles({ commit }) {
       try {
-        const res = await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_ROLEAPI)
+        const res = await axios.get(`${process.env.VUE_APP_BASE_URL}role/list`)
         const data = res.data
         commit('setRoles', data)
       } catch (error) {
@@ -54,7 +52,7 @@ const store = createStore({
       try {
         state.signErr = null
         state.signupError = null
-        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_SiGNUP_API,
+        await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`,
           { email: email, firstName: firstName, lastName: lastName, roleId: roleId, password: password })
       } catch (error) {
         if (error.response.data.errors) {
@@ -71,7 +69,7 @@ const store = createStore({
     async login({ state }, { email, password }) {
       state.loginError = null
       try {
-        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_API,
+        await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`,
           { email: email, password: password }).then(res => {
             localStorage.setItem('userToken', JSON.stringify(res.data.token))
             localStorage.setItem('user', JSON.stringify(res.data.user))
@@ -85,10 +83,9 @@ const store = createStore({
     //for polls list
     async getPolls({ state, commit }, { pollPage }) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage + process.env.VUE_APP_POLLIST_PAGE)
+        await axios.get(`${process.env.VUE_APP_BASE_URL}poll/list/${pollPage}?limit=${state.pollLimit}`)
           .then(res => {
             if (res.data.rows.length) {
-              console.log(res)
               commit('setPolls', res.data.rows)
             }
             else {
@@ -103,7 +100,7 @@ const store = createStore({
     //for adding poll
     async addPoll({ state }, { title, options }) {
       try {
-        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLADD_API,
+        await axios.post(`${process.env.VUE_APP_BASE_URL}poll/add`,
           {
             title: title,
             options: options
@@ -114,9 +111,10 @@ const store = createStore({
     },
 
     //for delteing poll 
-    async deletePoll({ state }, { pollId }) {
+    async deletePoll({ state, commit }, { pollId }) {
       try {
-        await axios.delete(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_DELETEPOLL_API + pollId)
+        await axios.delete(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`)
+        commit('filterPolls', pollId)
       } catch (error) {
         console.log(error, state.pollId)
       }
