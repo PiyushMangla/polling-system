@@ -6,17 +6,18 @@ export const pollApi = () => {
     const store = useStore()
     const router = useRouter()
 
-    //get user and userToken
-    const user = computed(() => {
-        return store.state.user
-    })
-    const userToken = computed(() => {
-        return store.state.userToken
-    })
+    // //get user and userToken
+    // const user = computed(() => {
+    //     return store.state.user
+    // })
+    // const userToken = computed(() => {
+    //     return store.state.userToken
+    // })
     onMounted(() => {
         store.commit('setUser')
         store.commit('setToken')
     })
+    const scrollComponent = ref(null)
 
     //getting poll list
     const polls = computed(() => {
@@ -31,6 +32,9 @@ export const pollApi = () => {
         title: '',
         options: []
     })
+    const pollId = computed(() => {
+        return store.state.pollId
+    })
     const pollOption = reactive([])
     //to add poll
     let i = 0
@@ -38,9 +42,19 @@ export const pollApi = () => {
     const addError = ref('')
 
     onMounted(async () => {
-        await store.dispatch('getPolls')
+        await store.dispatch('getPolls' , {
+            pollId:pollId.value
+        })
         console.log(polls.value)
     })
+    const handleScroll = async() => {
+        let element = scrollComponent.value
+      if (element.getBoundingClientRect().bottom < window.innerHeight) {
+        store.commit('setpollId')
+        await store.dispatch('getPolls' , {
+            pollId:pollId.value
+        })
+    }}
 
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
@@ -49,7 +63,6 @@ export const pollApi = () => {
     const showAddPoll = () => {
         router.push('/addPoll')
     }
-
 
     // adding new poll function
     const addNewPoll = async () => {
@@ -81,7 +94,7 @@ export const pollApi = () => {
             addError.value = "Please add a title with atleast 10 characters"
         }
     }
-    // keyup function for options input
+    // addform function for options input
     const addOptions = () => {
         if (option.value) {
             if (!newPoll.options.includes(option.value)) {
@@ -98,7 +111,7 @@ export const pollApi = () => {
         });
         i--
     }
-    //to delete option from addpoll
+    //to update option from addpoll
     const updateNewopt = (key) => {
         option.value = key
         newPoll.options = newPoll.options.filter((item) => {
@@ -118,7 +131,7 @@ export const pollApi = () => {
     }
 
     return {
-        polls, user, userToken, countVote, isState, showAddPoll, addNewPoll, newPoll,
+        polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent,
         deleteNewopt, updateNewopt, addOptions, option, addError, showPoll, poll, viewPolls
     }
 }

@@ -1,4 +1,4 @@
-import { computed, onMounted,  reactive, ref } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import { useStore } from 'vuex'
 import { useRouter } from "vue-router"
 
@@ -43,7 +43,7 @@ export const loginApi = () => {
     })
 
     //errors
-    const signUperr = ref('')
+    const signUpErr = ref('')
     const signError = computed(() => {
         return store.state.signupError
     })
@@ -63,7 +63,7 @@ export const loginApi = () => {
             if (signUser.lastName.length > 5) {
                 if (signUser.password.length > 8) {
                     isLoading.value = true
-                    signUperr.value = ''
+                    signUpErr.value = ''
                     try {
                         await store.dispatch('signup', {
                             email: signUser.email,
@@ -76,7 +76,7 @@ export const loginApi = () => {
                             isSubmitted.value = true
                         }
                         else {
-                            signUperr.value = "Email already exist. Try something else"
+                            signUpErr.value = "Email already exist. Try something else"
                         }
                     } catch (error) {
                         console.log('error')
@@ -84,14 +84,14 @@ export const loginApi = () => {
                         isLoading.value = false
                     }
                 } else {
-                    signUperr.value = 'Password length should be greater than 8'
+                    signUpErr.value = 'Password length should be greater than 8'
                 }
             } else {
-                signUperr.value = 'Lastname should be greater than 5'
+                signUpErr.value = 'Lastname should be greater than 5'
             }
         }
         else {
-            signUperr.value = 'Firstname length should be greater than 5'
+            signUpErr.value = 'Firstname length should be greater than 5'
         }
     }
     const formSubmit = () => {
@@ -124,7 +124,7 @@ export const loginApi = () => {
     }
 
     return {
-        user, userToken, signUser, roles, logout, handleSignup, signError, signUperr, loginBtn,
+        user, userToken, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
         handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
     }
 }

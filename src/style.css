@@ -122,23 +122,26 @@ form h3 {
 .formBtn:disabled {
     opacity: .5;
 }
-.Error {
+.errors {
     margin-left: 40px;
     margin-top: 10px;
     color: crimson;
     text-shadow: 1px 1px #555;
 }
-
+.pollHead{
+    display: flex;
+}
 .poll {
     padding: 10px;
     border-top: 1px dotted #ddd;
-    margin-top: 20px;
+    margin-top: 27px;
     margin-left: 20px;
     margin-bottom: 20px;
 }
 .pollIcons{
     margin-left: 20px;
     color: #bec2c4;
+    margin-top: 30px;
     font-size: 18px;
 }
 .pollIcons span{
@@ -152,6 +155,7 @@ form h3 {
     font-size: 30px;
     text-transform: capitalize;
     cursor: pointer;
+    margin-top: 20px;
 }
 
 .pollOptions {

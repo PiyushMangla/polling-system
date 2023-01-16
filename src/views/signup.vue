@@ -5,40 +5,16 @@
       <h3>Signup for new User</h3>
 
       <label class="formLabel">First Name:</label>
-      <input
-        type="text"
-        class="formInput"
-        placeholder="Enter firstname"
-        v-model="signUser.firstName"
-        required
-      />
+      <input type="text" class="formInput" placeholder="Enter firstname" v-model="signUser.firstName" required />
 
       <label class="formLabel">Last Name:</label>
-      <input
-        type="text"
-        class="formInput"
-        placeholder="Enter lastname"
-        v-model="signUser.lastName"
-        required
-      />
+      <input type="text" class="formInput" placeholder="Enter lastname" v-model="signUser.lastName" required />
 
       <label class="formLabel">Email:</label>
-      <input
-        type="email"
-        class="formInput"
-        placeholder="Enter Email"
-        v-model="signUser.email"
-        required
-      />
+      <input type="email" class="formInput" placeholder="Enter Email" v-model="signUser.email" required />
 
       <label for="userName" class="formLabel">Password:</label>
-      <input
-        type="password"
-        class="formInput"
-        placeholder="Enter password"
-        v-model="signUser.password"
-        required
-      />
+      <input type="password" class="formInput" placeholder="Enter password" v-model="signUser.password" required />
 
       <label for="userName" class="formLabel">Role:</label>
       <select class="formRole" v-model="signUser.roleId" required>
@@ -47,7 +23,7 @@
           <option :value="role.id">{{ role.name }}</option>
         </template>
       </select>
-        <span class="Error">{{ signUperr }}</span>
+      <span class="errors">{{ signUpErr }}</span>
       <button class="formBtn">
         Sign Up
         <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
