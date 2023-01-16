@@ -118,8 +118,8 @@ export const loginApi = () => {
 
     //for logout
     const logout = () => {
-        localStorage.setItem('user', JSON.stringify(null))
-        localStorage.setItem('userToken', JSON.stringify(null))
+        localStorage.removeItem('user')
+        localStorage.removeItem('userToken')
         router.push('/')
     }
 

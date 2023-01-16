@@ -156,6 +156,7 @@ form h3 {
     text-transform: capitalize;
     cursor: pointer;
     margin-top: 20px;
+    padding-bottom: 15px;
 }
 
 .pollOptions {

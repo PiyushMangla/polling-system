@@ -32,8 +32,8 @@ export const pollApi = () => {
         title: '',
         options: []
     })
-    const pollId = computed(() => {
-        return store.state.pollId
+    const pollPage = computed(() => {
+        return store.state.pollPage
     })
     const pollOption = reactive([])
     //to add poll
@@ -43,16 +43,16 @@ export const pollApi = () => {
 
     onMounted(async () => {
         await store.dispatch('getPolls' , {
-            pollId:pollId.value
+            pollPage:pollPage.value
         })
         console.log(polls.value)
     })
     const handleScroll = async() => {
         let element = scrollComponent.value
       if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        store.commit('setpollId')
+        store.commit('setpollPage')
         await store.dispatch('getPolls' , {
-            pollId:pollId.value
+            pollPage:pollPage.value
         })
     }}
 
@@ -105,14 +105,14 @@ export const pollApi = () => {
         }
     }
     // to delete option from addForm
-    const deleteNewopt = (key) => {
+    const deleteNewOpt = (key) => {
         newPoll.options = newPoll.options.filter((item) => {
             return key !== item;
         });
         i--
     }
     //to update option from addpoll
-    const updateNewopt = (key) => {
+    const updateNewOpt = (key) => {
         option.value = key
         newPoll.options = newPoll.options.filter((item) => {
             return key !== item;
@@ -132,6 +132,6 @@ export const pollApi = () => {
 
     return {
         polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent,
-        deleteNewopt, updateNewopt, addOptions, option, addError, showPoll, poll, viewPolls
+        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls
     }
 }

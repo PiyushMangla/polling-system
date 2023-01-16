@@ -11,7 +11,7 @@ const store = createStore({
     signupError: null,
     signErr: null,
     loginError: null,
-    pollId: 3
+    pollPage: 3
   },
   mutations: {
     setRoles: (state, payload) => {
@@ -26,8 +26,8 @@ const store = createStore({
     setPolls: (state, payload) => {
       state.polls = payload
     },
-    setpollId: (state) => {
-      state.pollId += 1
+    setpollPage: (state) => {
+      state.pollPage += 1
     },
     countVote: (state, { keyA, keyB }) => {
       state.polls[keyB].options[keyA].vote += 1
@@ -82,9 +82,9 @@ const store = createStore({
     },
 
     //for polls list
-    async getPolls({ state, commit }, {pollId}) {
+    async getPolls({ state, commit }, {pollPage}) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollId,
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage,
           {
             headers: {
               'token': state.userToken
