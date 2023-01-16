@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-console.log(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API)
+
 const store = createStore({
   state: {
     roles: null,
@@ -10,7 +10,8 @@ const store = createStore({
     poll: null,
     signupError: null,
     signErr: null,
-    loginError: null
+    loginError: null,
+    pollPage: 3
   },
   mutations: {
     setRoles: (state, payload) => {
@@ -20,10 +21,13 @@ const store = createStore({
       state.user = JSON.parse(localStorage.getItem('user'))
     },
     setToken: (state) => {
-      state.user = JSON.parse(localStorage.getItem('userToken'))
+      state.userToken = JSON.parse(localStorage.getItem('userToken'))
     },
     setPolls: (state, payload) => {
       state.polls = payload
+    },
+    setpollPage: (state) => {
+      state.pollPage += 1
     },
     countVote: (state, { keyA, keyB }) => {
       state.polls[keyB].options[keyA].vote += 1
@@ -63,7 +67,8 @@ const store = createStore({
     },
 
     //for login
-    async login({ state}, { email, password }) {
+    async login({ state }, { email, password }) {
+      state.loginError = null
       try {
         await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_API,
           { email: email, password: password }).then(res => {
@@ -77,17 +82,33 @@ const store = createStore({
     },
 
     //for polls list
-    async getPolls({ state, commit },) {
+    async getPolls({ state, commit }, {pollPage}) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API,
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage,
           {
             headers: {
               'token': state.userToken
             }
           }).then(res => {
-            commit('setPolls', res.data)
-            console.log(state.polls)
+            commit('setPolls', res.data.rows)
           })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    //for adding poll
+    async addPoll({ state }, { title, options }) {
+      try {
+        await axios.post(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLADD_API,
+          {
+            title: title,
+            options: options
+          }, {
+          headers: {
+            'token': state.userToken
+          }
+        })
       } catch (error) {
         console.log(error)
       }

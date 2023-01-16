@@ -21,7 +21,7 @@ export const loginApi = () => {
     const roles = computed(() => {
         return store.state.roles
     })
-    
+
     //get user and userToken
     const user = computed(() => {
         return store.state.user
@@ -34,12 +34,16 @@ export const loginApi = () => {
     onMounted(async () => {
         await store.dispatch('getRoles')
     })
-    onMounted( () => {
+    onMounted(() => {
         store.commit('setUser')
-        store.commit('userToken')
+        store.commit('setToken')
+        if (user.value) {
+            router.push('/home')
+        }
     })
 
     //errors
+    const signUpErr = ref('')
     const signError = computed(() => {
         return store.state.signupError
     })
@@ -50,34 +54,53 @@ export const loginApi = () => {
         return store.state.loginError
     })
 
+    const loginBtn = ref(true)
+
     // for signup
     const handleSignup = async () => {
-        console.log('handleSignup')
-        isLoading.value = true
-        try {
-            await store.dispatch('signup', {
-                email: signUser.email,
-                password: signUser.password,
-                roleId: signUser.roleId,
-                firstName: signUser.firstName,
-                lastName: signUser.lastName
-            })
-            if (!signError.value && !signErr.value) {
-                isSubmitted.value = true
+
+        if (signUser.firstName.length > 5) {
+            if (signUser.lastName.length > 5) {
+                if (signUser.password.length > 8) {
+                    isLoading.value = true
+                    signUpErr.value = ''
+                    try {
+                        await store.dispatch('signup', {
+                            email: signUser.email,
+                            password: signUser.password,
+                            roleId: signUser.roleId,
+                            firstName: signUser.firstName,
+                            lastName: signUser.lastName
+                        })
+                        if (!signError.value && !signErr.value) {
+                            isSubmitted.value = true
+                        }
+                        else {
+                            signUpErr.value = "Email already exist. Try something else"
+                        }
+                    } catch (error) {
+                        console.log('error')
+                    } finally {
+                        isLoading.value = false
+                    }
+                } else {
+                    signUpErr.value = 'Password length should be greater than 8'
+                }
+            } else {
+                signUpErr.value = 'Lastname should be greater than 5'
             }
-        } catch (error) {
-            console.log('error')
-        } finally {
-            isLoading.value = false
+        }
+        else {
+            signUpErr.value = 'Firstname length should be greater than 5'
         }
     }
     const formSubmit = () => {
         isSubmitted.value = false
         router.push('/')
     }
-
     //for login
     const handleLogin = async () => {
+        isLoading.value = true
         try {
             await store.dispatch('login', {
                 email: signUser.email,
@@ -87,19 +110,21 @@ export const loginApi = () => {
                 router.push('/home')
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error)
+        } finally {
+            isLoading.value = false
         }
     }
 
     //for logout
     const logout = () => {
-        localStorage.setItem('user' , JSON.stringify(null))
-        localStorage.setItem('userToken' , JSON.stringify(null))
+        localStorage.removeItem('user')
+        localStorage.removeItem('userToken')
         router.push('/')
     }
 
     return {
-        user, userToken, signUser, roles, logout, handleSignup, signError,
+        user, userToken, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
         handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
     }
 }
