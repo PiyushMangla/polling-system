@@ -10,7 +10,14 @@ const routes = [
       { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue') },
       { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue") },
       { path: '/showPoll', name: 'showPoll', component: () => import("../components/showPoll.vue") },
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      if(!localStorage.getItem('user')) {
+          next('/');
+      } else {
+          next();
+      }
+  }
   },
   {
     path: '/signup',
@@ -20,7 +27,14 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: () => import('../views/login.vue')
+    component: () => import('../views/login.vue'),
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('user')) {
+          next('/home');
+      } else {
+          next();
+      }
+  }
   }
 ]
 

@@ -37,9 +37,7 @@ export const loginApi = () => {
     onMounted(() => {
         store.commit('setUser')
         store.commit('setToken')
-        if (user.value) {
-            router.push('/home')
-        }
+        store.state.loginError = null
     })
 
     //errors
