@@ -9,7 +9,7 @@
               ><i class="fa fa-trash"></i
             ></span>
             <span @click="showPoll(polls.indexOf(poll))"
-              ><i class="fa fa-pen"></i
+              ><i class="fas fa-edit"></i
             ></span>
           </div>
         </div>

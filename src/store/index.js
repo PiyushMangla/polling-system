@@ -84,9 +84,10 @@ const store = createStore({
     //for polls list
     async getPolls({ commit }, { pollPage }) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage).then(res => {
-          commit('setPolls', res.data.rows)
-        })
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage)
+          .then(res => {
+            commit('setPolls', res.data.rows)
+          })
       } catch (error) {
         console.log(error)
       }
@@ -99,13 +100,9 @@ const store = createStore({
           {
             title: title,
             options: options
-          }, {
-          headers: {
-            'token': state.userToken
-          }
-        })
+          },)
       } catch (error) {
-        console.log(error)
+        console.log(error, state.pollId)
       }
     },
 
