@@ -42,19 +42,20 @@ export const pollApi = () => {
     const addError = ref('')
 
     onMounted(async () => {
-        await store.dispatch('getPolls' , {
-            pollPage:pollPage.value
+        await store.dispatch('getPolls', {
+            pollPage: pollPage.value
         })
         console.log(polls.value)
     })
-    const handleScroll = async() => {
+    const handleScroll = async () => {
         let element = scrollComponent.value
-      if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        store.commit('setpollPage')
-        await store.dispatch('getPolls' , {
-            pollPage:pollPage.value
-        })
-    }}
+        if (element.getBoundingClientRect().bottom < window.innerHeight) {
+            store.commit('setpollPage')
+            await store.dispatch('getPolls', {
+                pollPage: pollPage.value
+            })
+        }
+    }
 
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
@@ -130,8 +131,23 @@ export const pollApi = () => {
         router.push('/pollList')
     }
 
+    //delete a poll
+    const deletePoll = async (key) => {
+        try {
+            await store.dispatch('deletePoll', {
+                pollId: key
+            }),
+                await store.dispatch('getPolls', {
+                    pollPage: pollPage.value
+                })
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     return {
         polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent,
-        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls
+        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll
     }
 }

@@ -82,16 +82,11 @@ const store = createStore({
     },
 
     //for polls list
-    async getPolls({ state, commit }, {pollPage}) {
+    async getPolls({ commit }, { pollPage }) {
       try {
-        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage,
-          {
-            headers: {
-              'token': state.userToken
-            }
-          }).then(res => {
-            commit('setPolls', res.data.rows)
-          })
+        await axios.get(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_POLLLIST_API + pollPage).then(res => {
+          commit('setPolls', res.data.rows)
+        })
       } catch (error) {
         console.log(error)
       }
@@ -111,6 +106,15 @@ const store = createStore({
         })
       } catch (error) {
         console.log(error)
+      }
+    },
+
+    //for delteing poll 
+    async deletePoll({ state }, { pollId }) {
+      try {
+        await axios.delete(process.env.VUE_APP_BASE_URL + process.env.VUE_APP_DELETEPOLL_API + pollId)
+      } catch (error) {
+        console.log(error, state.pollId)
       }
     }
   },
