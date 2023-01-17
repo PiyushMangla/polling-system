@@ -26,13 +26,8 @@
             value="true"
             v-model="option.isState"
             :disabled="option.isState"
-            @change="
-              countVote(
-                poll.options.indexOf(option),
-                polls.indexOf(poll),
-                isChecked
-              )
-            "
+            @change="countVote(option.id, isChecked)"
+            @click="option.voteCount.length += 1"
           />
           <span>{{ option.optionTitle }} </span>
           <span>Votes: {{ option.voteCount.length }} </span>
@@ -44,7 +39,7 @@
     </div>
   </div>
   <div v-else class="showLoader">
-    <h3>Reload the page</h3>
+    <h3>Reload the page or try again loging in</h3>
     <i class="fa fa-spinner fa-spin"></i>
   </div>
 </template>
@@ -66,6 +61,7 @@ export default {
       deletePoll,
       pollPage,
       showUpdatePoll,
+      countVote,
     } = pollApi();
     const store = useStore();
 
@@ -76,7 +72,7 @@ export default {
       window.removeEventListener("scroll", handleScroll);
     });
 
-    // to show polls
+    //to show polls
     onMounted(async () => {
       await store.dispatch("getPolls", {
         pollPage: pollPage.value,
@@ -92,6 +88,7 @@ export default {
       scrollComponent,
       deletePoll,
       showUpdatePoll,
+      countVote,
     };
   },
 };

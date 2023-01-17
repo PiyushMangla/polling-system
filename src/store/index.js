@@ -30,11 +30,11 @@ const store = createStore({
         return poll.id != payload
       })
     },
+    sortPolls: (state) => {
+      state.polls = state.polls.reverse()
+    },
     setPollPage: (state) => {
       state.pollPage += 1
-    },
-    countVote: (state, { keyA, keyB }) => {
-      state.polls[keyB].options[keyA].vote += 1
     },
     setPoll: (state, payload) => {
       state.poll = payload
@@ -110,9 +110,7 @@ const store = createStore({
           {
             title: title,
             options: options
-          },).then(res => {
-            console.log(res.data.poll.id)
-          })
+          },)
       } catch (error) {
         console.log(error, state.pollId)
       }
@@ -141,16 +139,28 @@ const store = createStore({
     },
 
     //for updating poll title
-    async updatePollTitle({state},{title,createdBy,pollId}) {
+    async updatePollTitle({ state }, { title, createdBy, pollId }) {
       try {
-        await axios.put(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`,{
-          title:title,
-          createrBy:createdBy
+        await axios.put(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`, {
+          title: title,
+          createrBy: createdBy
         })
       } catch (error) {
-        console.log(error,state.pollLimit)
+        console.log(error, state.pollLimit)
       }
-    }
+    },
+
+    //for votecount
+    async countVote({ state }, { keyA }) {
+      try {
+        await axios.post(`${process.env.VUE_APP_BASE_URL}vote/count`, {
+          optionId: keyA
+        })
+        console.log(state.polls)
+      } catch (error) {
+        console.log(error, state.pollLimit)
+      }
+    },
   },
 })
 

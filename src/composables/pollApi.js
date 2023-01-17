@@ -6,8 +6,6 @@ export const pollApi = () => {
     const store = useStore()
     const router = useRouter()
 
-    const scrollComponent = ref(null)
-
     //getting user
     const user = computed(() => {
         return store.state.user
@@ -17,10 +15,12 @@ export const pollApi = () => {
     const polls = computed(() => {
         return store.state.polls
     })
+
     //getting single poll
     const poll = computed(() => {
         return store.state.poll
     })
+    //for adding poll
     const isState = ref(false)
     const newPoll = reactive({
         title: '',
@@ -30,14 +30,15 @@ export const pollApi = () => {
         return store.state.pollPage
     })
     const pollOption = reactive([])
-    //to add poll
     let i = 0
     const option = ref('')
     const addError = ref('')
 
+    //for scroll
     const scrollState = computed(() => {
         return store.state.scrollState
     })
+    const scrollComponent = ref(null)
 
     //scroll function
     const handleScroll = async () => {
@@ -50,11 +51,6 @@ export const pollApi = () => {
                 })
             }
         }
-    }
-
-    //vote count function
-    const countVote = (keyA, keyB) => {
-        store.commit('countVote', { keyA, keyB })
     }
 
     const showAddPoll = () => {
@@ -85,6 +81,7 @@ export const pollApi = () => {
                 }
                 router.push('/pollList')
                 addError.value = ''
+                store.commit('sortPolls')
             }
             else {
                 addError.value = "please add atleast 3 options"
@@ -171,9 +168,21 @@ export const pollApi = () => {
                 console.log(error)
             }
             router.push('/pollList')
-                titleUpdateErr.value = ''
-        }else{
+            titleUpdateErr.value = ''
+            store.state.polls = []
+            store.state.pollPage = 1
+            store.state.scrollState = true
+        } else {
             titleUpdateErr.value = 'Please add a title with more than 10 characters'
+        }
+    }
+
+    //vote count function
+    const countVote = async (keyA) => {
+        try {
+            await store.dispatch('countVote', { keyA })
+        } catch (error) {
+            console.log(error)
         }
     }
 
