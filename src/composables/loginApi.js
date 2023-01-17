@@ -26,17 +26,12 @@ export const loginApi = () => {
     const user = computed(() => {
         return store.state.user
     })
-    const userToken = computed(() => {
-        return store.state.userToken
-    })
-
 
     onMounted(async () => {
         await store.dispatch('getRoles')
+        store.commit('setUser')
     })
     onMounted(() => {
-        store.commit('setUser')
-        store.commit('setToken')
         store.state.loginError = null
     })
 
@@ -118,11 +113,12 @@ export const loginApi = () => {
     const logout = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('userToken')
+        store.state.polls = []
         router.push('/')
     }
 
     return {
-        user, userToken, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
+        user, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
         handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
     }
 }

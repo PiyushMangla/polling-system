@@ -1,4 +1,4 @@
-import { reactive, ref, computed, onMounted } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -6,18 +6,12 @@ export const pollApi = () => {
     const store = useStore()
     const router = useRouter()
 
-    // //get user and userToken
-    // const user = computed(() => {
-    //     return store.state.user
-    // })
-    // const userToken = computed(() => {
-    //     return store.state.userToken
-    // })
-    onMounted(() => {
-        store.commit('setUser')
-        store.commit('setToken')
-    })
     const scrollComponent = ref(null)
+
+    //getting user
+    const user = computed(() => {
+        return store.state.user
+    })
 
     //getting poll list
     const polls = computed(() => {
@@ -41,28 +35,33 @@ export const pollApi = () => {
     const option = ref('')
     const addError = ref('')
 
-    onMounted(async () => {
-        await store.dispatch('getPolls', {
-            pollPage: pollPage.value
-        })
-        console.log(polls.value)
+    const scrollState = computed(() => {
+        return store.state.scrollState
     })
+
+    //scroll function
     const handleScroll = async () => {
-        let element = scrollComponent.value
-        if (element.getBoundingClientRect().bottom < window.innerHeight) {
-            store.commit('setpollPage')
-            await store.dispatch('getPolls', {
-                pollPage: pollPage.value
-            })
+        if (scrollState.value == true) {
+            let element = scrollComponent.value
+            if (element.getBoundingClientRect().bottom < window.innerHeight) {
+                store.commit('setPollPage')
+                await store.dispatch('getPolls', {
+                    pollPage: pollPage.value
+                })
+            }
         }
     }
 
+    //vote count function
     const countVote = (keyA, keyB) => {
         store.commit('countVote', { keyA, keyB })
     }
 
     const showAddPoll = () => {
         router.push('/addPoll')
+        store.state.polls = []
+        store.state.pollPage = 1
+        store.state.scrollState = true
     }
 
     // adding new poll function
@@ -122,13 +121,18 @@ export const pollApi = () => {
     }
     //to view single poll
     const showPoll = (key) => {
-        store.commit('setPoll', key)
-        router.push('/showPoll')
+        router.push(`/showPoll/${key}`)
+        store.state.polls = []
+        store.state.pollPage = 1
+        store.state.scrollState = true
     }
 
     //to go back to poll list
     const viewPolls = () => {
         router.push('/pollList')
+        store.state.polls = []
+        store.state.pollPage = 1
+        store.state.scrollState = true
     }
 
     //delete a poll
@@ -143,11 +147,39 @@ export const pollApi = () => {
         } catch (error) {
             console.log(error)
         }
+    }
 
+    //update a poll title
+    const titleUpdateErr = ref(null)
+    const showUpdatePoll = (key) => {
+        console.log(user.value)
+        router.push(`/updatePoll/${key}`)
+        store.state.polls = []
+        store.state.pollPage = 1
+        store.state.scrollState = true
+    }
+    const updateTitle = async (keyA, keyB) => {
+        if (keyA.length > 10) {
+            try {
+                await store.dispatch('updatePollTitle', {
+                    title: keyA,
+                    createdBy: user.value.id,
+                    pollId: keyB
+                })
+            }
+            catch (error) {
+                console.log(error)
+            }
+            router.push('/pollList')
+                titleUpdateErr.value = ''
+        }else{
+            titleUpdateErr.value = 'Please add a title with more than 10 characters'
+        }
     }
 
     return {
-        polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent,
-        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll
+        polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent, scrollState,
+        deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll, pollPage,
+        showUpdatePoll, updateTitle, titleUpdateErr
     }
 }
