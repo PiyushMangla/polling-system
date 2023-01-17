@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
@@ -9,15 +9,16 @@ const routes = [
     children: [
       { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue') },
       { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue") },
-      { path: '/showPoll', name: 'showPoll', component: () => import("../components/showPoll.vue") },
+      { path: '/showPoll/:id', name: 'showPoll', component: () => import("../components/showPoll.vue"), props: true },
+      { path: '/updatePoll/:id', name: 'updatePoll', component: () => import("../components/updatePoll.vue"), props: true }
     ],
     beforeEnter: (to, from, next) => {
-      if(!localStorage.getItem('user')) {
-          next('/');
+      if (!localStorage.getItem('user')) {
+        next('/');
       } else {
-          next();
+        next();
       }
-  }
+    }
   },
   {
     path: '/signup',
@@ -29,12 +30,12 @@ const routes = [
     name: 'login',
     component: () => import('../views/login.vue'),
     beforeEnter: (to, from, next) => {
-      if(localStorage.getItem('user')) {
-          next('/home');
+      if (localStorage.getItem('user')) {
+        next('/home');
       } else {
-          next();
+        next();
       }
-  }
+    }
   }
 ]
 

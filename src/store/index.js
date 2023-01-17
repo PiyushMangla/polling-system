@@ -4,6 +4,7 @@ import axios from 'axios'
 const store = createStore({
   state: {
     roles: null,
+    user: null,
     polls: [],
     poll: null,
     signupError: null,
@@ -11,11 +12,15 @@ const store = createStore({
     loginError: null,
     scrollState: true,
     pollPage: 1,
-    pollLimit: 3
+    pollLimit: 3,
+    titleUpdateErr: null
   },
   mutations: {
     setRoles: (state, payload) => {
       state.roles = payload
+    },
+    setUser: (state) => {
+      state.user = JSON.parse(localStorage.getItem('user'))
     },
     setPolls: (state, payload) => {
       state.polls = state.polls.concat(payload)
@@ -31,8 +36,8 @@ const store = createStore({
     countVote: (state, { keyA, keyB }) => {
       state.polls[keyB].options[keyA].vote += 1
     },
-    setPoll: (state, key) => {
-      state.poll = state.polls[key]
+    setPoll: (state, payload) => {
+      state.poll = payload
     }
   },
   actions: {
@@ -66,7 +71,7 @@ const store = createStore({
     },
 
     //for login
-    async login({ state }, { email, password }) {
+    async login({ state, commit }, { email, password }) {
       state.loginError = null
       try {
         await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`,
@@ -75,6 +80,7 @@ const store = createStore({
             localStorage.setItem('user', JSON.stringify(res.data.user))
             state.loginError = null
           })
+        commit('setUser')
       } catch (error) {
         state.loginError = error.response.data.message
       }
@@ -104,7 +110,9 @@ const store = createStore({
           {
             title: title,
             options: options
-          },)
+          },).then(res => {
+            console.log(res.data.poll.id)
+          })
       } catch (error) {
         console.log(error, state.pollId)
       }
@@ -117,6 +125,30 @@ const store = createStore({
         commit('filterPolls', pollId)
       } catch (error) {
         console.log(error, state.pollId)
+      }
+    },
+
+    //for getting single poll
+    async getSinglePoll({ commit }, { pollId }) {
+      try {
+        await axios.get(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`)
+          .then(res => {
+            commit('setPoll', res.data)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    //for updating poll title
+    async updatePollTitle({state},{title,createdBy,pollId}) {
+      try {
+        await axios.put(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`,{
+          title:title,
+          createrBy:createdBy
+        })
+      } catch (error) {
+        console.log(error,state.pollLimit)
       }
     }
   },

@@ -2,7 +2,9 @@
   <nav>
     <h1 class="title">Polling System</h1>
     <div class="home" v-if="user">
-      <router-link to="/home"><i class="fa-solid fa-house"></i> Logged in as {{ user.firstName }} </router-link>
+      <router-link to="/home"
+        ><i class="fa-solid fa-house"></i> Logged in as {{ user.firstName }}
+      </router-link>
       <button @click="logout">logout</button>
     </div>
     <div class="logins" v-else>
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-import { loginApi } from '@/composables/loginApi.js';
+import { loginApi } from "@/composables/loginApi.js";
 export default {
   name: "navBar",
   setup() {

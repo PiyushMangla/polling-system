@@ -23,11 +23,13 @@ export const loginApi = () => {
     })
 
     //get user and userToken
-    const user = JSON.parse(localStorage.getItem('user'))
-    const userToken = JSON.parse(localStorage.getItem('userToken'))
+    const user = computed(() => {
+        return store.state.user
+    })
 
     onMounted(async () => {
         await store.dispatch('getRoles')
+        store.commit('setUser')
     })
     onMounted(() => {
         store.state.loginError = null
@@ -111,11 +113,12 @@ export const loginApi = () => {
     const logout = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('userToken')
+        store.state.polls = []
         router.push('/')
     }
 
     return {
-        user, userToken, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
+        user, signUser, roles, logout, handleSignup, signError, signUpErr, loginBtn,
         handleLogin, signErr, loginError, isLoading, isSubmitted, formSubmit
     }
 }
