@@ -31,6 +31,14 @@
           />
           <span>{{ option.optionTitle }} </span>
           <span>Votes: {{ option.voteCount.length }} </span>
+          <span
+            @click="showPollOpt(option.id, option.optionTitle)"
+            class="optIcon"
+            ><i class="fas fa-edit"></i
+          ></span>
+          <span class="optIcon" @click="deletePollOpt(option.id)"
+            ><i class="fas fa-trash"></i
+          ></span>
         </div>
       </div>
     </div>
@@ -62,6 +70,8 @@ export default {
       pollPage,
       showUpdatePoll,
       countVote,
+      showPollOpt,
+      deletePollOpt,
     } = pollApi();
     const store = useStore();
 
@@ -74,6 +84,9 @@ export default {
 
     //to show polls
     onMounted(async () => {
+      store.state.polls = [];
+      store.state.pollPage = 1;
+      store.state.scrollState = true;
       await store.dispatch("getPolls", {
         pollPage: pollPage.value,
       });
@@ -89,6 +102,8 @@ export default {
       deletePoll,
       showUpdatePoll,
       countVote,
+      showPollOpt,
+      deletePollOpt,
     };
   },
 };
@@ -99,6 +114,15 @@ export default {
   margin-left: 100px;
   margin-top: 100px;
   font-size: 60px;
+  color: #2c3e50;
+}
+.optIcon {
+  margin-left: 12px;
+  color: lightsteelblue;
+  transition: font-size 1s;
+}
+.optIcon:hover {
+  font-size: 25px;
   color: #2c3e50;
 }
 </style>

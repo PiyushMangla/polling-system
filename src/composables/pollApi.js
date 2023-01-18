@@ -55,9 +55,6 @@ export const pollApi = () => {
 
     const showAddPoll = () => {
         router.push('/addPoll')
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     // adding new poll function
@@ -81,7 +78,6 @@ export const pollApi = () => {
                 }
                 router.push('/pollList')
                 addError.value = ''
-                store.commit('sortPolls')
             }
             else {
                 addError.value = "please add atleast 3 options"
@@ -119,17 +115,11 @@ export const pollApi = () => {
     //to view single poll
     const showPoll = (key) => {
         router.push(`/showPoll/${key}`)
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     //to go back to poll list
     const viewPolls = () => {
         router.push('/pollList')
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     //delete a poll
@@ -151,9 +141,6 @@ export const pollApi = () => {
     const showUpdatePoll = (key) => {
         console.log(user.value)
         router.push(`/updatePoll/${key}`)
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
     const updateTitle = async (keyA, keyB) => {
         if (keyA.length > 10) {
@@ -169,9 +156,6 @@ export const pollApi = () => {
             }
             router.push('/pollList')
             titleUpdateErr.value = ''
-            store.state.polls = []
-            store.state.pollPage = 1
-            store.state.scrollState = true
         } else {
             titleUpdateErr.value = 'Please add a title with more than 10 characters'
         }
@@ -186,9 +170,41 @@ export const pollApi = () => {
         }
     }
 
+    //update option of a poll
+    const showPollOpt = (keyA, keyB) => {
+        router.push(`/updateOption/${keyA}/${keyB}`)
+    }
+    const updatePollOpt = async (keyA, keyB) => {
+        if(keyB.length>1){
+        try {
+            await store.dispatch('updatePollOpt', {
+                optId: keyA,
+                title: keyB
+            })
+            router.push('/pollList')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    else{
+        titleUpdateErr.value = 'option cant be blank'
+    }
+    }
+
+    //delete a option of the poll
+    const deletePollOpt = async (key) => {
+        try {
+            await store.dispatch('deletePollOpt', {
+                optId: key
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return {
         polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent, scrollState,
         deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll, pollPage,
-        showUpdatePoll, updateTitle, titleUpdateErr
+        showUpdatePoll, updateTitle, titleUpdateErr, showPollOpt, deletePollOpt, updatePollOpt
     }
 }

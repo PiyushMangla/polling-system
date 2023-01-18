@@ -113,6 +113,7 @@ export const loginApi = () => {
     const logout = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('userToken')
+        localStorage.removeItem('optionId')
         store.state.polls = []
         router.push('/')
     }
