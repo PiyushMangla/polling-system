@@ -175,20 +175,20 @@ export const pollApi = () => {
         router.push(`/updateOption/${keyA}/${keyB}`)
     }
     const updatePollOpt = async (keyA, keyB) => {
-        if(keyB.length>1){
-        try {
-            await store.dispatch('updatePollOpt', {
-                optId: keyA,
-                title: keyB
-            })
-            router.push('/pollList')
-        } catch (error) {
-            console.log(error)
+        if (keyB.length > 1) {
+            try {
+                await store.dispatch('updatePollOpt', {
+                    optId: keyA,
+                    title: keyB
+                })
+                router.push('/pollList')
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }
-    else{
-        titleUpdateErr.value = 'option cant be blank'
-    }
+        else {
+            titleUpdateErr.value = 'option cant be blank'
+        }
     }
 
     //delete a option of the poll

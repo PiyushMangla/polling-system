@@ -36,7 +36,10 @@
             class="optIcon"
             ><i class="fas fa-edit"></i
           ></span>
-          <span class="optIcon" @click="deletePollOpt(option.id)"
+          <span
+            class="optIcon"
+            @click="deletePollOpt(option.id)"
+            v-if="poll.optionList.length > 3"
             ><i class="fas fa-trash"></i
           ></span>
         </div>

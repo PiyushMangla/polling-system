@@ -40,6 +40,17 @@ const store = createStore({
         }
       }
     },
+    setCount: (state) => {
+      if (state.countState) {
+        for (let i = 0; i < state.countState.length; i++) {
+          for (let j = 0; j < state.poll.optionList.length; j++) {
+            if (state.poll.optionList[j].id == state.countState[i]) {
+              state.poll.optionList[j].isState = true
+            }
+          }
+        }
+      }
+    },
     filterPolls: (state, payload) => {
       state.polls = state.polls.filter(poll => {
         return poll.id != payload
@@ -50,6 +61,13 @@ const store = createStore({
     },
     setPoll: (state, payload) => {
       state.poll = payload
+    },
+    filterOpt: (state, payload) => {
+      state.polls.filter(poll => {
+        poll.optionList = poll.optionList.filter(option => {
+         return option.id != payload
+        })
+      })
     }
   },
   actions: {
@@ -145,6 +163,7 @@ const store = createStore({
         await axios.get(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`)
           .then(res => {
             commit('setPoll', res.data)
+            commit('setCount')
           })
       } catch (error) {
         console.log(error)
@@ -178,16 +197,16 @@ const store = createStore({
           state.optionId.push(keyA)
         }
         localStorage.setItem('optionId', JSON.stringify(state.optionId))
-        console.log(state.polls)
       } catch (error) {
         console.log(error, state.pollLimit)
       }
     },
 
     //delete poll option
-    async deletePollOpt({ state }, { optId }) {
+    async deletePollOpt({ state, commit }, { optId }) {
       try {
         await axios.delete(`${process.env.VUE_APP_BASE_URL}option/delete/${optId}`)
+        commit('filterOpt', optId)
       } catch (error) {
         console.log(error, state.pollPage)
       }
