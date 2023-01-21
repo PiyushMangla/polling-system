@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="addPoll">
+    <div class="addPoll" v-if="showAddBtn">
       <button class="addPollBtn" @click="showAddPoll">Add a new poll</button>
     </div>
   </div>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { pollApi } from "../composables/pollApi.js";
 import { useStore } from "vuex";
 export default {
@@ -77,6 +77,7 @@ export default {
       deletePollOpt,
     } = pollApi();
     const store = useStore();
+    const showAddBtn = ref(false);
 
     onMounted(() => {
       window.addEventListener("scroll", handleScroll);
@@ -96,6 +97,13 @@ export default {
       console.log(polls.value);
     });
 
+    onMounted(() => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user.roleId === 1) {
+        showAddBtn.value = true;
+      }
+    });
+
     return {
       polls,
       showAddPoll,
@@ -107,6 +115,7 @@ export default {
       countVote,
       showPollOpt,
       deletePollOpt,
+      showAddBtn,
     };
   },
 };
