@@ -13,7 +13,9 @@ const store = createStore({
     scrollState: true,
     pollPage: 1,
     pollLimit: 3,
-    titleUpdateErr: null
+    titleUpdateErr: null,
+    optionId: [],
+    countState: JSON.parse(localStorage.getItem('optionId'))
   },
   mutations: {
     setRoles: (state, payload) => {
@@ -25,6 +27,30 @@ const store = createStore({
     setPolls: (state, payload) => {
       state.polls = state.polls.concat(payload)
     },
+    setCountState: (state) => {
+      if (state.countState) {
+        for (let i = 0; i < state.countState.length; i++) {
+          for (let j = 0; j < state.polls.length; j++) {
+            for (let k = 0; k < state.polls[j].optionList.length; k++) {
+              if (state.polls[j].optionList[k].id == state.countState[i]) {
+                state.polls[j].optionList[k].isState = true
+              }
+            }
+          }
+        }
+      }
+    },
+    setCount: (state) => {
+      if (state.countState) {
+        for (let i = 0; i < state.countState.length; i++) {
+          for (let j = 0; j < state.poll.optionList.length; j++) {
+            if (state.poll.optionList[j].id == state.countState[i]) {
+              state.poll.optionList[j].isState = true
+            }
+          }
+        }
+      }
+    },
     filterPolls: (state, payload) => {
       state.polls = state.polls.filter(poll => {
         return poll.id != payload
@@ -33,11 +59,15 @@ const store = createStore({
     setPollPage: (state) => {
       state.pollPage += 1
     },
-    countVote: (state, { keyA, keyB }) => {
-      state.polls[keyB].options[keyA].vote += 1
-    },
     setPoll: (state, payload) => {
       state.poll = payload
+    },
+    filterOpt: (state, payload) => {
+      state.polls.filter(poll => {
+        poll.optionList = poll.optionList.filter(option => {
+         return option.id != payload
+        })
+      })
     }
   },
   actions: {
@@ -93,6 +123,7 @@ const store = createStore({
           .then(res => {
             if (res.data.rows.length) {
               commit('setPolls', res.data.rows)
+              commit('setCountState')
             }
             else {
               state.scrollState = false
@@ -110,9 +141,7 @@ const store = createStore({
           {
             title: title,
             options: options
-          },).then(res => {
-            console.log(res.data.poll.id)
-          })
+          },)
       } catch (error) {
         console.log(error, state.pollId)
       }
@@ -134,6 +163,7 @@ const store = createStore({
         await axios.get(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`)
           .then(res => {
             commit('setPoll', res.data)
+            commit('setCount')
           })
       } catch (error) {
         console.log(error)
@@ -141,14 +171,55 @@ const store = createStore({
     },
 
     //for updating poll title
-    async updatePollTitle({state},{title,createdBy,pollId}) {
+    async updatePollTitle({ state }, { title, createdBy, pollId }) {
       try {
-        await axios.put(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`,{
-          title:title,
-          createrBy:createdBy
+        await axios.put(`${process.env.VUE_APP_BASE_URL}poll/${pollId}`, {
+          title: title,
+          createrBy: createdBy
         })
       } catch (error) {
-        console.log(error,state.pollLimit)
+        console.log(error, state.pollLimit)
+      }
+    },
+
+    //for votecount
+    async countVote({ state }, { keyA }) {
+      if (localStorage.getItem('optionId')) {
+        state.optionId = JSON.parse(localStorage.getItem('optionId'))
+      } else {
+        state.optionId = [keyA]
+      }
+      try {
+        await axios.post(`${process.env.VUE_APP_BASE_URL}vote/count`, {
+          optionId: keyA
+        })
+        if (!state.optionId.includes(keyA)) {
+          state.optionId.push(keyA)
+        }
+        localStorage.setItem('optionId', JSON.stringify(state.optionId))
+      } catch (error) {
+        console.log(error, state.pollLimit)
+      }
+    },
+
+    //delete poll option
+    async deletePollOpt({ state, commit }, { optId }) {
+      try {
+        await axios.delete(`${process.env.VUE_APP_BASE_URL}option/delete/${optId}`)
+        commit('filterOpt', optId)
+      } catch (error) {
+        console.log(error, state.pollPage)
+      }
+    },
+
+    //update poll option
+    async updatePollOpt({ state }, { optId, title }) {
+      try {
+        await axios.put(`${process.env.VUE_APP_BASE_URL}option/edit/${optId}`, {
+          optionTitle: title
+        })
+      } catch (error) {
+        console.log(error, state.pollPage)
       }
     }
   },

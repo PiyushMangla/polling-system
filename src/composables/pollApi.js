@@ -6,8 +6,6 @@ export const pollApi = () => {
     const store = useStore()
     const router = useRouter()
 
-    const scrollComponent = ref(null)
-
     //getting user
     const user = computed(() => {
         return store.state.user
@@ -17,10 +15,12 @@ export const pollApi = () => {
     const polls = computed(() => {
         return store.state.polls
     })
+
     //getting single poll
     const poll = computed(() => {
         return store.state.poll
     })
+    //for adding poll
     const isState = ref(false)
     const newPoll = reactive({
         title: '',
@@ -30,14 +30,15 @@ export const pollApi = () => {
         return store.state.pollPage
     })
     const pollOption = reactive([])
-    //to add poll
     let i = 0
     const option = ref('')
     const addError = ref('')
 
+    //for scroll
     const scrollState = computed(() => {
         return store.state.scrollState
     })
+    const scrollComponent = ref(null)
 
     //scroll function
     const handleScroll = async () => {
@@ -52,16 +53,8 @@ export const pollApi = () => {
         }
     }
 
-    //vote count function
-    const countVote = (keyA, keyB) => {
-        store.commit('countVote', { keyA, keyB })
-    }
-
     const showAddPoll = () => {
         router.push('/addPoll')
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     // adding new poll function
@@ -122,17 +115,11 @@ export const pollApi = () => {
     //to view single poll
     const showPoll = (key) => {
         router.push(`/showPoll/${key}`)
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     //to go back to poll list
     const viewPolls = () => {
         router.push('/pollList')
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
 
     //delete a poll
@@ -154,9 +141,6 @@ export const pollApi = () => {
     const showUpdatePoll = (key) => {
         console.log(user.value)
         router.push(`/updatePoll/${key}`)
-        store.state.polls = []
-        store.state.pollPage = 1
-        store.state.scrollState = true
     }
     const updateTitle = async (keyA, keyB) => {
         if (keyA.length > 10) {
@@ -171,15 +155,56 @@ export const pollApi = () => {
                 console.log(error)
             }
             router.push('/pollList')
-                titleUpdateErr.value = ''
-        }else{
+            titleUpdateErr.value = ''
+        } else {
             titleUpdateErr.value = 'Please add a title with more than 10 characters'
+        }
+    }
+
+    //vote count function
+    const countVote = async (keyA) => {
+        try {
+            await store.dispatch('countVote', { keyA })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //update option of a poll
+    const showPollOpt = (keyA, keyB) => {
+        router.push(`/updateOption/${keyA}/${keyB}`)
+    }
+    const updatePollOpt = async (keyA, keyB) => {
+        if (keyB.length > 1) {
+            try {
+                await store.dispatch('updatePollOpt', {
+                    optId: keyA,
+                    title: keyB
+                })
+                router.push('/pollList')
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        else {
+            titleUpdateErr.value = 'option cant be blank'
+        }
+    }
+
+    //delete a option of the poll
+    const deletePollOpt = async (key) => {
+        try {
+            await store.dispatch('deletePollOpt', {
+                optId: key
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 
     return {
         polls, countVote, isState, showAddPoll, addNewPoll, newPoll, handleScroll, scrollComponent, scrollState,
         deleteNewOpt, updateNewOpt, addOptions, option, addError, showPoll, poll, viewPolls, deletePoll, pollPage,
-        showUpdatePoll, updateTitle, titleUpdateErr
+        showUpdatePoll, updateTitle, titleUpdateErr, showPollOpt, deletePollOpt, updatePollOpt
     }
 }

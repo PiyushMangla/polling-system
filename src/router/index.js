@@ -10,7 +10,8 @@ const routes = [
       { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue') },
       { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue") },
       { path: '/showPoll/:id', name: 'showPoll', component: () => import("../components/showPoll.vue"), props: true },
-      { path: '/updatePoll/:id', name: 'updatePoll', component: () => import("../components/updatePoll.vue"), props: true }
+      { path: '/updatePoll/:id', name: 'updatePoll', component: () => import("../components/updatePoll.vue"), props: true },
+      { path: '/updateOption/:id/:title', name: 'updateOption', component: () => import("../components/updateOption.vue"), props: true }
     ],
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('user')) {

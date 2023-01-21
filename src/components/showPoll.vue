@@ -14,13 +14,8 @@
         value="true"
         v-model="option.isState"
         :disabled="option.isState"
-        @change="
-          countVote(
-            poll.options.indexOf(option),
-            polls.indexOf(poll),
-            isChecked
-          )
-        "
+        @change="countVote(option.id, isChecked)"
+        @click="option.voteCount.length += 1"
       />
       <span>{{ option.optionTitle }} </span>
       <span>Votes: {{ option.voteCount.length }} </span>
@@ -39,7 +34,7 @@ import { useRoute } from "vue-router";
 export default {
   name: "showPoll",
   setup() {
-    const { poll, viewPolls } = pollApi();
+    const { poll, viewPolls, countVote } = pollApi();
     const store = useStore();
     const route = useRoute();
 
@@ -50,7 +45,7 @@ export default {
         pollId: id,
       });
     });
-    return { poll, viewPolls };
+    return { poll, viewPolls, countVote };
   },
 };
 </script>

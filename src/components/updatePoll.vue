@@ -25,7 +25,7 @@ import { useStore } from "vuex";
 export default {
   name: "updatePoll",
   setup() {
-    const { poll, viewPolls, updateTitle , titleUpdateErr } = pollApi();
+    const { poll, viewPolls, updateTitle, titleUpdateErr } = pollApi();
     const store = useStore();
     const route = useRoute();
     const { id } = route.params;
@@ -37,7 +37,7 @@ export default {
       console.log(poll.value);
     });
 
-    return { poll, viewPolls, updateTitle, id ,titleUpdateErr };
+    return { poll, viewPolls, updateTitle, id, titleUpdateErr };
   },
 };
 </script>

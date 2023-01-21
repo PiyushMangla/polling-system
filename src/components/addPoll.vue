@@ -23,7 +23,7 @@
       <h4 class="errors">{{ addError }}</h4>
 
       <div>
-        <button class="pollButton" @click="addNewPoll">Add New Poll</button>
+        <button class="pollButton" @click.prevent="addNewPoll">Add New Poll</button>
         <button class="pollButton" @click="viewPolls">Cancel</button>
       </div>
     </div>
