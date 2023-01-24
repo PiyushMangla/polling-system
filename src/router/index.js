@@ -8,7 +8,15 @@ const routes = [
     component: () => import('../views/home.vue'),
     children: [
       { path: '/pollList', name: 'pollList', component: () => import('../components/pollList.vue') },
-      { path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue") },
+      {
+        path: '/addPoll', name: 'addPoll', component: () => import("../components/addPoll.vue"), beforeEnter: (to, from, next) => {
+          if (JSON.parse(localStorage.getItem('user')).roleId !== 1) {
+            next('/pollList');
+          } else {
+            next();
+          }
+        }
+      },
       { path: '/showPoll/:id', name: 'showPoll', component: () => import("../components/showPoll.vue"), props: true },
       { path: '/updatePoll/:id', name: 'updatePoll', component: () => import("../components/updatePoll.vue"), props: true },
       { path: '/updateOption/:id/:title', name: 'updateOption', component: () => import("../components/updateOption.vue"), props: true }

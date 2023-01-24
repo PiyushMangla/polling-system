@@ -65,7 +65,7 @@ const store = createStore({
     filterOpt: (state, payload) => {
       state.polls.filter(poll => {
         poll.optionList = poll.optionList.filter(option => {
-         return option.id != payload
+          return option.id != payload
         })
       })
     }
